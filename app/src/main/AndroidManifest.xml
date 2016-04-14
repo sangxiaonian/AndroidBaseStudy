@@ -18,7 +18,9 @@
         <activity android:name=".activity.DrawCricleActivity" />
         <activity android:name=".activity.ClockActivity" />
         <activity android:name=".activity.SeekBarActivity" />
-        <activity android:name=".activity.ViewSwitchActivity"></activity>
+        <activity android:name=".activity.ViewSwitchActivity" />
+        <activity android:name=".activity.TextSwitchActivity" />
+        <activity android:name=".activity.ToastActivity"></activity>
     </application>
 
 </manifest>

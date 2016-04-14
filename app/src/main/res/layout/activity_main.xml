@@ -44,6 +44,19 @@
                 android:text="视图切换（ViewSwitch）"
                 />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bt_textswitcher"
+                android:text="文本切换（textswitcher）"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bt_toast"
+                android:text="各类吐司"
+                />
+
         </LinearLayout>
     </ScrollView>
 
