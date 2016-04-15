@@ -20,7 +20,11 @@
         <activity android:name=".activity.SeekBarActivity" />
         <activity android:name=".activity.ViewSwitchActivity" />
         <activity android:name=".activity.TextSwitchActivity" />
-        <activity android:name=".activity.ToastActivity"></activity>
+        <activity android:name=".activity.ToastActivity" />
+        <activity android:name=".activity.CalendarActivity" />
+        <activity android:name=".activity.PickerActivity" />
+        <activity android:name=".activity.NotifictionActivity" />
+        <activity android:name=".activity.DialoActivity"></activity>
     </application>
 
 </manifest>
