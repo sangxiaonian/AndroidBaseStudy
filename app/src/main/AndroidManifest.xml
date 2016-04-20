@@ -24,7 +24,8 @@
         <activity android:name=".activity.CalendarActivity" />
         <activity android:name=".activity.PickerActivity" />
         <activity android:name=".activity.NotifictionActivity" />
-        <activity android:name=".activity.DialoActivity"></activity>
+        <activity android:name=".activity.DialoActivity" />
+        <activity android:name=".activity.ExpandableActivity"></activity>
     </application>
 
 </manifest>

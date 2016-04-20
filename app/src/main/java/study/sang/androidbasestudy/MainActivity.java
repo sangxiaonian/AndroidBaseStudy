@@ -10,6 +10,7 @@ import study.sang.androidbasestudy.activity.CalendarActivity;
 import study.sang.androidbasestudy.activity.ClockActivity;
 import study.sang.androidbasestudy.activity.DialoActivity;
 import study.sang.androidbasestudy.activity.DrawCricleActivity;
+import study.sang.androidbasestudy.activity.ExpandableActivity;
 import study.sang.androidbasestudy.activity.NotifictionActivity;
 import study.sang.androidbasestudy.activity.PickerActivity;
 import study.sang.androidbasestudy.activity.SeekBarActivity;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 c= NotifictionActivity.class;
                 break;
             case R.id.bt_dialog:
-                c= DialoActivity.class;
+                c= ExpandableActivity.class;
                 break;
         }
         startActivity(new Intent(MainActivity.this,c));
