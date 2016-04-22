@@ -11,6 +11,7 @@ import study.sang.androidbasestudy.activity.ClockActivity;
 import study.sang.androidbasestudy.activity.DialoActivity;
 import study.sang.androidbasestudy.activity.DrawCricleActivity;
 import study.sang.androidbasestudy.activity.ExpandableActivity;
+import study.sang.androidbasestudy.activity.FragmnetTestActivity;
 import study.sang.androidbasestudy.activity.NotifictionActivity;
 import study.sang.androidbasestudy.activity.PickerActivity;
 import study.sang.androidbasestudy.activity.RecycleActivity;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button bt_run,bt_clock,bt_seekBar,bt_viewSwitch,bt_textwitch ,bt_toast,bt_clander;
 
-    private Button bt_picker,bt_noti,bt_dialog,bt_recycle;
+    private Button bt_picker,bt_noti,bt_dialog,bt_recycle,bt_frag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_noti.setOnClickListener(this);
         bt_dialog.setOnClickListener(this);
         bt_recycle.setOnClickListener(this);
+        bt_frag.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_noti= (Button) findViewById(R.id.bt_noti);
         bt_dialog = (Button) findViewById(R.id.bt_dialog);
         bt_recycle = (Button) findViewById(R.id.bt_recycle);
+        bt_frag= (Button) findViewById(R.id.bt_frag);
 
     }
 
@@ -101,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_recycle:
                 c= RecycleActivity.class;
+                break;
+            case R.id.bt_frag:
+                c= FragmnetTestActivity.class;
                 break;
         }
         startActivity(new Intent(MainActivity.this,c));

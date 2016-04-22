@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,22 +34,13 @@ public class AllAdapter extends RecyclerView.Adapter {
      */
     public final static int STATE = 2;
 
-    /**
-     * 头布局
-     */
-    private final int HEAD = 1;
-
-    /**
-     * 脚步局
-     **/
-    private final int FOOT = 2;
 
     /**
      * 布局排列方式
-     * */
-    private int mOr=LinearLayoutManager.VERTICAL;
+     */
+    private int mOr = LinearLayoutManager.VERTICAL;
 
-    private int mGridSpan=2;
+    private int mGridSpan = 2;
 
     private int type;
 
@@ -76,7 +66,44 @@ public class AllAdapter extends RecyclerView.Adapter {
     public void setData(List data) {
         this.data = data;
         notifyDataSetChanged();
+    }
 
+    /***
+     * 添加头布局
+     *
+     * @param view 头布局中显示的view
+     */
+    public void addHeader(View view) {
+        headViews.add(view);
+
+    }
+
+    /**
+     * 添加脚布局
+     *
+     * @param footView
+     */
+    public void addFoot(View footView) {
+        footViews.add(footView);
+
+    }
+
+    /**
+     * 设置排布方向 默认为竖直方向
+     *
+     * @param orientation
+     */
+    public void setmOrientation(int orientation) {
+        this.mOr = orientation;
+    }
+
+    /**
+     * 设置GridView的列数，默认为2
+     *
+     * @param spanCount
+     */
+    public void setmGridSpan(int spanCount) {
+        this.mGridSpan = spanCount;
     }
 
 
@@ -85,7 +112,7 @@ public class AllAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder holder = null;
 
         //脚布局
-        if (viewType >=getItemCount()-footViews.size()) {
+        if (viewType >= getItemCount() - footViews.size()) {
             holder = new FootView(footViews.get(viewType - headViews.size() - data.size()));
 
             //头布局
@@ -155,7 +182,7 @@ public class AllAdapter extends RecyclerView.Adapter {
                         return ((GridLayoutManager) finalLayoutManager).getSpanCount();
 
                         //脚布局
-                    } else if (position >=getItemCount()  - footViews.size()) {
+                    } else if (position >= getItemCount() - footViews.size()) {
                         return ((GridLayoutManager) finalLayoutManager).getSpanCount();
 
                         //普通布局
@@ -175,44 +202,6 @@ public class AllAdapter extends RecyclerView.Adapter {
             recyclerView.setLayoutManager(layoutManager);
         }
     }
-
-    /***
-     * 添加头布局
-     *
-     * @param view 头布局中显示的view
-     */
-    public void addHeader(View view) {
-        headViews.add(view);
-
-    }
-
-    /**
-     * 添加脚布局
-     *
-     * @param footView
-     */
-    public void addFoot(View footView) {
-        footViews.add(footView);
-
-    }
-
-    /**
-     * 设置排布方向 默认为竖直方向
-     * @param orientation
-     */
-    public void setmOrientation(int orientation){
-        this.mOr=orientation;
-    }
-
-    /**
-     * 设置GridView的列数，默认为2
-     * @param spanCount
-     */
-    public void setmGridSpan(int spanCount){
-        this.mGridSpan=spanCount;
-    }
-
-
 
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

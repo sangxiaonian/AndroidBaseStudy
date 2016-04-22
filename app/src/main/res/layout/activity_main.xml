@@ -86,6 +86,12 @@
                 android:layout_height="wrap_content"
                 android:text="RecycleView" />
 
+            <Button
+                android:id="@+id/bt_frag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fragment" />
+
 
         </LinearLayout>
     </ScrollView>

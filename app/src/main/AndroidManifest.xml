@@ -26,7 +26,8 @@
         <activity android:name=".activity.NotifictionActivity" />
         <activity android:name=".activity.DialoActivity" />
         <activity android:name=".activity.ExpandableActivity" />
-        <activity android:name=".activity.RecycleActivity"></activity>
+        <activity android:name=".activity.RecycleActivity" />
+        <activity android:name=".activity.FragmnetTestActivity"></activity>
     </application>
 
 </manifest>
