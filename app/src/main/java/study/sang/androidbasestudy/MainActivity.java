@@ -13,6 +13,7 @@ import study.sang.androidbasestudy.activity.DrawCricleActivity;
 import study.sang.androidbasestudy.activity.ExpandableActivity;
 import study.sang.androidbasestudy.activity.NotifictionActivity;
 import study.sang.androidbasestudy.activity.PickerActivity;
+import study.sang.androidbasestudy.activity.RecycleActivity;
 import study.sang.androidbasestudy.activity.SeekBarActivity;
 import study.sang.androidbasestudy.activity.TextSwitchActivity;
 import study.sang.androidbasestudy.activity.ToastActivity;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button bt_run,bt_clock,bt_seekBar,bt_viewSwitch,bt_textwitch ,bt_toast,bt_clander;
 
-    private Button bt_picker,bt_noti,bt_dialog;
+    private Button bt_picker,bt_noti,bt_dialog,bt_recycle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +44,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_picker.setOnClickListener(this);
         bt_noti.setOnClickListener(this);
         bt_dialog.setOnClickListener(this);
+        bt_recycle.setOnClickListener(this);
     }
 
     private void initViews() {
+
         bt_run = (Button) findViewById(R.id.bt_run);
         bt_clock= (Button) findViewById(R.id.bt_Clock);
         bt_seekBar= (Button) findViewById(R.id.bt_seekBar);
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_picker = (Button) findViewById(R.id.bt_picker);
         bt_noti= (Button) findViewById(R.id.bt_noti);
         bt_dialog = (Button) findViewById(R.id.bt_dialog);
+        bt_recycle = (Button) findViewById(R.id.bt_recycle);
 
     }
 
@@ -94,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bt_dialog:
                 c= ExpandableActivity.class;
+                break;
+            case R.id.bt_recycle:
+                c= RecycleActivity.class;
                 break;
         }
         startActivity(new Intent(MainActivity.this,c));

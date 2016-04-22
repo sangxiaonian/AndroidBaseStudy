@@ -25,7 +25,8 @@
         <activity android:name=".activity.PickerActivity" />
         <activity android:name=".activity.NotifictionActivity" />
         <activity android:name=".activity.DialoActivity" />
-        <activity android:name=".activity.ExpandableActivity"></activity>
+        <activity android:name=".activity.ExpandableActivity" />
+        <activity android:name=".activity.RecycleActivity"></activity>
     </application>
 
 </manifest>
