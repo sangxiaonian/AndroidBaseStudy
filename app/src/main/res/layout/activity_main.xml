@@ -92,6 +92,18 @@
                 android:layout_height="wrap_content"
                 android:text="Fragment" />
 
+            <Button
+                android:id="@+id/bt_image3D"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3D图片轮播" />
+
+            <Button
+                android:id="@+id/bt_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="拍照" />
+
 
         </LinearLayout>
     </ScrollView>

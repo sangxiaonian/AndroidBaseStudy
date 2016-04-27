@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.Button;
 
 import study.sang.androidbasestudy.activity.CalendarActivity;
+import study.sang.androidbasestudy.activity.CameraActivity;
 import study.sang.androidbasestudy.activity.ClockActivity;
 import study.sang.androidbasestudy.activity.DialoActivity;
 import study.sang.androidbasestudy.activity.DrawCricleActivity;
 import study.sang.androidbasestudy.activity.ExpandableActivity;
 import study.sang.androidbasestudy.activity.FragmnetTestActivity;
+import study.sang.androidbasestudy.activity.Image3DActivity;
 import study.sang.androidbasestudy.activity.NotifictionActivity;
 import study.sang.androidbasestudy.activity.PickerActivity;
 import study.sang.androidbasestudy.activity.RecycleActivity;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button bt_run,bt_clock,bt_seekBar,bt_viewSwitch,bt_textwitch ,bt_toast,bt_clander;
 
-    private Button bt_picker,bt_noti,bt_dialog,bt_recycle,bt_frag;
+    private Button bt_picker,bt_noti,bt_dialog,bt_recycle,bt_frag,bt_3D,bt_camera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_dialog.setOnClickListener(this);
         bt_recycle.setOnClickListener(this);
         bt_frag.setOnClickListener(this);
+        bt_3D.setOnClickListener(this);
+        bt_camera.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bt_dialog = (Button) findViewById(R.id.bt_dialog);
         bt_recycle = (Button) findViewById(R.id.bt_recycle);
         bt_frag= (Button) findViewById(R.id.bt_frag);
+        bt_3D = (Button) findViewById(R.id.bt_image3D);
+        bt_camera= (Button) findViewById(R.id.bt_camera);
 
     }
 
@@ -108,6 +114,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_frag:
                 c= FragmnetTestActivity.class;
                 break;
+            case R.id.bt_image3D:
+                c = Image3DActivity.class;
+                break;
+            case R.id.bt_camera:
+                c= CameraActivity.class;
+                break;
+
         }
         startActivity(new Intent(MainActivity.this,c));
     }
