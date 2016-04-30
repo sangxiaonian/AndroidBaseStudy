@@ -26,11 +26,6 @@
                 android:layout_marginTop="10dp"
                 android:text="跑步的小球" />
 
-            <Button
-                android:id="@+id/bt_Clock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="时钟组件" />
 
             <Button
                 android:id="@+id/bt_seekBar"
@@ -38,17 +33,6 @@
                 android:layout_height="wrap_content"
                 android:text="SeekBar和星级进度" />
 
-            <Button
-                android:id="@+id/bt_viewswitcher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="视图切换（ViewSwitch）" />
-
-            <Button
-                android:id="@+id/bt_textswitcher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="文本切换（textswitcher）" />
 
             <Button
                 android:id="@+id/bt_toast"
@@ -56,17 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="各类吐司" />
 
-            <Button
-                android:id="@+id/bt_clander"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="日历控件" />
 
-            <Button
-                android:id="@+id/bt_picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="日期选择器" />
 
             <Button
                 android:id="@+id/bt_noti"
@@ -84,7 +58,7 @@
                 android:id="@+id/bt_recycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RecycleView" />
+                android:text="自带头布局RecycleView" />
 
             <Button
                 android:id="@+id/bt_frag"
@@ -92,18 +66,23 @@
                 android:layout_height="wrap_content"
                 android:text="Fragment" />
 
-            <Button
-                android:id="@+id/bt_image3D"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="3D图片轮播" />
 
             <Button
                 android:id="@+id/bt_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="拍照" />
-
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/viewStitvh"
+                android:text="各种切换视图"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/time"
+                android:text="时间相关的空间"/>
 
         </LinearLayout>
     </ScrollView>
