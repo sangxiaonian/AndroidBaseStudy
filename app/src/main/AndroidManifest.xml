@@ -41,7 +41,8 @@
         <activity android:name=".Tran.ColockActivity" />
         <activity android:name=".Tran.ViewswitchActivity" />
         <activity android:name=".activity.RadioGroupActivity" />
-        <activity android:name=".Tran.CustomActivity"></activity>
+        <activity android:name=".Tran.CustomActivity" />
+        <activity android:name=".activity.ViewPagerActivity"></activity>
     </application>
 
 </manifest>

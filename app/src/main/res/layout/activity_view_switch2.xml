@@ -31,6 +31,12 @@
         android:id="@+id/bt_stackView"
         android:text="叠在一起的图片"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_viewpager"
+        android:text="利用ViewPager实现各种炫酷轮播效果"
+        />
 
 
 </LinearLayout>

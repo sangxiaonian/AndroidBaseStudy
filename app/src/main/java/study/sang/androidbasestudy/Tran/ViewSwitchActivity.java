@@ -10,6 +10,7 @@ import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.activity.Image3DActivity;
 import study.sang.androidbasestudy.activity.StackViewActivity;
 import study.sang.androidbasestudy.activity.TextSwitchActivity;
+import study.sang.androidbasestudy.activity.ViewPagerActivity;
 import study.sang.androidbasestudy.activity.ViewSwitchActivity;
 import study.sang.androidbasestudy.utils.JLog;
 
@@ -21,7 +22,7 @@ public class ViewswitchActivity extends AppCompatActivity implements View.OnClic
     private Button bt_3D;
     private Button bt_stack;
     private Button bt_viewSwitch;
-    private Button bt_textwitch;
+    private Button bt_textwitch,bt_viewpager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +32,13 @@ public class ViewswitchActivity extends AppCompatActivity implements View.OnClic
         bt_stack = (Button) findViewById(R.id.bt_stackView);
         bt_viewSwitch = (Button) findViewById(R.id.bt_viewswitcher);
         bt_textwitch = (Button) findViewById(R.id.bt_textswitcher);
+        bt_viewpager = (Button) findViewById(R.id.bt_viewpager);
+
         bt_3D.setOnClickListener(this);
         bt_viewSwitch.setOnClickListener(this);
         bt_textwitch.setOnClickListener(this);
         bt_stack.setOnClickListener(this);
+        bt_viewpager.setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +57,9 @@ public class ViewswitchActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.bt_textswitcher:
                 c= TextSwitchActivity.class;
+                break;
+            case R.id.bt_viewpager:
+                c= ViewPagerActivity.class;
                 break;
 
         }
