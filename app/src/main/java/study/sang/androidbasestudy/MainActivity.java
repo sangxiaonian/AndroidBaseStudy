@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import study.sang.androidbasestudy.Tran.ColockActivity;
+import study.sang.androidbasestudy.Tran.CustomActivity;
 import study.sang.androidbasestudy.Tran.ViewswitchActivity;
 import study.sang.androidbasestudy.activity.CalendarActivity;
 import study.sang.androidbasestudy.activity.CameraActivity;
@@ -104,7 +105,7 @@ bt_sitch= (Button) findViewById(R.id.viewStitvh);
 
             //带头布局的Recycle
             case R.id.bt_recycle:
-                c= RecycleActivity.class;
+                c= CustomActivity.class;
                 break;
             //Fragment
             case R.id.bt_frag:

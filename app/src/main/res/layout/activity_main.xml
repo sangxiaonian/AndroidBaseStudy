@@ -58,7 +58,7 @@
                 android:id="@+id/bt_recycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="自带头布局RecycleView" />
+                android:text="自定义控件" />
 
             <Button
                 android:id="@+id/bt_frag"

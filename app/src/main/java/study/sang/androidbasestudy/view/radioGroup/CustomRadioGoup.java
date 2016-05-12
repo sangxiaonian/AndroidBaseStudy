@@ -140,7 +140,7 @@ public class CustomRadioGoup extends RadioGroup {
      * 添加一个名字为str的控件
      * @param str
      */
-    public void addView(String str) {
+    public void addchild(String str) {
         childs.add(str);
         RadioButton child = getChild();
         child.setText(str);

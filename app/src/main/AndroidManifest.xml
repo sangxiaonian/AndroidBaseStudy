@@ -39,7 +39,9 @@
         <activity android:name=".activity.ImageSwitchActivity" />
         <activity android:name=".activity.StackViewActivity" />
         <activity android:name=".Tran.ColockActivity" />
-        <activity android:name=".Tran.ViewswitchActivity"></activity>
+        <activity android:name=".Tran.ViewswitchActivity" />
+        <activity android:name=".activity.RadioGroupActivity" />
+        <activity android:name=".Tran.CustomActivity"></activity>
     </application>
 
 </manifest>
