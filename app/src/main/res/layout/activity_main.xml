@@ -84,6 +84,13 @@
                 android:id="@+id/time"
                 android:text="时间相关的空间"/>
 
+            <Button
+                android:id="@+id/bt_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="服务" />
+
+
         </LinearLayout>
     </ScrollView>
 
