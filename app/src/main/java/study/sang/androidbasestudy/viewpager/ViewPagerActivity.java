@@ -1,4 +1,4 @@
-package study.sang.androidbasestudy.activity;
+package study.sang.androidbasestudy.viewpager;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import study.sang.androidbasestudy.R;
-import study.sang.androidbasestudy.utils.JLog;
+import study.sang.androidbasestudy.viewpager.transformer.AlphaPageTransformer;
+import study.sang.androidbasestudy.viewpager.transformer.RotaPagerTransformer;
+import study.sang.androidbasestudy.viewpager.transformer.RotaPagersTransformer;
 
 /**
  * 这是个ViewPaget的类，利用ViewPager打造各种炫酷的广告轮播效果
@@ -28,6 +30,7 @@ public class ViewPagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_pager);
         vp = (ViewPager) findViewById(R.id.up);
 
+
         //设置pager间距
         vp.setPageMargin(20);
 
@@ -36,7 +39,8 @@ public class ViewPagerActivity extends AppCompatActivity {
         vp.setOffscreenPageLimit(3);
 
         vp.setAdapter(new MyPagerAdapter());
-
+//        vp.setPageTransformer(true,new AlphaPageTransformer()); //透明度变化
+        vp.setPageTransformer(true,new RotaPagersTransformer()); //透明度变化
     }
 
 

@@ -78,7 +78,7 @@ public class ViewSwitchActivity extends AppCompatActivity {
         screenNo--;
         if (screenNo >= 0) {
 
-            JLog.i(screenNo);
+            JLog.i(screenNo+"");
             viewSwitcher.setInAnimation(this, android.R.anim.slide_in_left);
             viewSwitcher.setOutAnimation(this, android.R.anim.slide_out_right);
             ((GridView) viewSwitcher.getNextView()).setAdapter(adapter);
@@ -93,7 +93,7 @@ public class ViewSwitchActivity extends AppCompatActivity {
         screenNo++;
         if (screenNo < screenCount) {
 
-            JLog.i(screenNo);
+            JLog.i(screenNo+"");
             viewSwitcher.setInAnimation(this, android.R.anim.slide_in_left);
             viewSwitcher.setOutAnimation(this, android.R.anim.slide_out_right);
             ((GridView) viewSwitcher.getNextView()).setAdapter(adapter);

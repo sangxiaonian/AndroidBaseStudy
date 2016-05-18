@@ -39,10 +39,12 @@
         <activity android:name=".activity.ImageSwitchActivity" />
         <activity android:name=".activity.StackViewActivity" />
         <activity android:name=".Tran.ColockActivity" />
-        <activity android:name=".Tran.ViewswitchActivity" />
+        <activity android:name=".Tran.ViewSwitchACtivity" />
         <activity android:name=".activity.RadioGroupActivity" />
         <activity android:name=".Tran.CustomActivity" />
-        <activity android:name=".activity.ViewPagerActivity"></activity>
+        <activity android:name=".viewpager.ViewPagerActivity" />
+        <activity android:name=".Tran.ViewPagerTranActivity" />
+        <activity android:name=".viewpager.ViewPagerFullActivity"></activity>
     </application>
 
 </manifest>

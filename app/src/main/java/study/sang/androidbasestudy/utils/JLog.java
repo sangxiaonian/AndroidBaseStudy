@@ -1,211 +1,122 @@
 package study.sang.androidbasestudy.utils;
 
 import android.util.Log;
-
-import java.util.Hashtable;
-
-/**
- * 作者： ${桑小年} on 2016/4/4.
- * 努力，为梦长留
- */
 public class JLog {
+    /**
+     *  tag
+     */
+    public static String tag = "PING";
+    /**
+     * 是否屏蔽log日志，当为false时，系统不再打印
+     */
+    private static boolean needLog = true;
 
-    private final static boolean logFlag = true;
 
-    public final static String tag = "PING";
-    private final static int logLevel = Log.VERBOSE;
-    private static Hashtable<String, JLog> sLoggerTable = new Hashtable<String, JLog>();
-    private static String mClassName;
+    public static void i(String content) {
+        if (needLog) {
+            Log.i(tag, getLogInfo() + content);
+        }
+    }
 
-    private static JLog jlog;
-    private static JLog klog;
+    public static void i(String tag, String content) {
+        if (needLog) {
+            Log.i(tag, getLogInfo() + content);
+        }
+    }
 
-    private static final String JAMES = "@james@ ";
-    private static final String KESEN = "@kesen@ ";
+    public static void d(String content) {
+        if (needLog) {
+            Log.d(tag, getLogInfo() + content);
+        }
+    }
 
-    private JLog(String name) {
-        mClassName = name;
+    public static void d(String tag, String content) {
+        if (needLog) {
+            Log.d(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void e(String content) {
+        if (needLog) {
+            Log.e(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void e(String tag, String content) {
+        if (needLog) {
+            Log.e(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void v(String content) {
+        if (needLog) {
+            Log.v(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void v(String tag, String content) {
+        if (needLog) {
+            Log.v(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void w(String content) {
+        if (needLog) {
+            Log.w(tag, getLogInfo() + content);
+        }
+    }
+
+    public static void w(String tag, String content) {
+        if (needLog) {
+            Log.w(tag, getLogInfo() + content);
+        }
+    }
+
+    private static String getLogInfo() {
+//            return getClassName() + "(" + getLineNumber() + ")" + "$" + getMethodName() + ": ";
+        return getClassName()+"==>>"+getMethodName()+"==>>  "+getLineNumber()+":\n"+"       ";
     }
 
     /**
-     * @param className
+     * 鑾峰彇Log鎵�湪鐨勭被鍚�锛坓etStackTrace鐨勭储寮曟牴鎹皟鐢ㄧ殑椤哄簭鏉ュ喅瀹氾紝鍙�杩囨墦鍗癓og鏍堟潵鑾峰彇锛�
      * @return
      */
-    @SuppressWarnings("unused")
-    private static JLog getLogger(String className) {
-        JLog classLogger = (JLog) sLoggerTable.get(className);
-        if (classLogger == null) {
-            classLogger = new JLog(className);
-            sLoggerTable.put(className, classLogger);
+    private static String getClassName() {
+        try {
+            String classPath = Thread.currentThread().getStackTrace()[5].getClassName();
+            return classPath.substring(classPath.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return classLogger;
-    }
 
-    /**
-     * Purpose:Mark user one
-     *
-     * @return
-     */
-    public static JLog kLog() {
-        if (klog == null) {
-            klog = new JLog(KESEN);
-        }
-        return klog;
-    }
-
-    /**
-     * Purpose:Mark user two
-     *
-     * @return
-     */
-    public static JLog jLog() {
-        if (jlog == null) {
-            jlog = new JLog(JAMES);
-        }
-        return jlog;
-    }
-
-    /**
-     * Get The Current Function Name
-     *
-     * @return
-     */
-    private static String getFunctionName() {
-        StackTraceElement[] sts = Thread.currentThread().getStackTrace();
-        if (sts == null) {
-            return null;
-        }
-        for (StackTraceElement st : sts) {
-            if (st.isNativeMethod()) {
-                continue;
-            }
-            if (st.getClassName().equals(Thread.class.getName())) {
-                continue;
-            }
-
-            return mClassName + "[ " + Thread.currentThread().getName() + ": "
-                    + st.getFileName() + " >>>>> "
-                    + st.getMethodName() +  " >>>>>> "+ st.getLineNumber() +" ]";
-        }
         return null;
     }
 
     /**
-     * The Log Level:i
-     *
-     * @param str
+     * 鑾峰彇Log鎵�湪鐨勬柟娉曞悕
+     * @return
      */
-    public static void i(Object str) {
-        if (logFlag) {
-            if (logLevel <= Log.INFO) {
-                String name = getFunctionName();
-                if (name != null) {
-                    Log.i(tag, name + " - " + str);
-                } else {
-                    Log.i(tag, str.toString());
-                }
-            }
+    private static String getMethodName() {
+        try {
+            return Thread.currentThread().getStackTrace()[5].getMethodName();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        return null;
     }
 
     /**
-     * The Log Level:d
-     *
-     * @param str
+     * 鑾峰彇Log鎵�湪鐨勮
+     * @return
      */
-    public static void d(Object str) {
-        if (logFlag) {
-            if (logLevel <= Log.DEBUG) {
-                String name = getFunctionName();
-                if (name != null) {
-                    Log.d(tag, name + " - " + str);
-                } else {
-                    Log.d(tag, str.toString());
-                }
-            }
+    private static int getLineNumber() {
+        try {
+            return Thread.currentThread().getStackTrace()[5].getLineNumber();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
 
-    /**
-     * The Log Level:V
-     *
-     * @param str
-     */
-    public static void v(Object str) {
-        if (logFlag) {
-            if (logLevel <= Log.VERBOSE) {
-                String name = getFunctionName();
-                if (name != null) {
-                    Log.v(tag, name + " - " + str);
-                } else {
-                    Log.v(tag, str.toString());
-                }
-            }
-        }
-    }
-
-    /**
-     * The Log Level:w
-     *
-     * @param str
-     */
-    public static void w(Object str) {
-        if (logFlag) {
-            if (logLevel <= Log.WARN) {
-                String name = getFunctionName();
-                if (name != null) {
-                    Log.w(tag, name + " - " + str);
-                } else {
-                    Log.w(tag, str.toString());
-                }
-            }
-        }
-    }
-
-    /**
-     * The Log Level:e
-     *
-     * @param str
-     */
-    public static void e(Object str) {
-        if (logFlag) {
-            if (logLevel <= Log.ERROR) {
-                String name = getFunctionName();
-                if (name != null) {
-                    Log.e(tag, name + " - " + str);
-                } else {
-                    Log.e(tag, str.toString());
-                }
-            }
-        }
-    }
-
-    /**
-     * The Log Level:e
-     *
-     * @param ex
-     */
-    public static void e(Exception ex) {
-        if (logFlag) {
-            if (logLevel <= Log.ERROR) {
-                Log.e(tag, "error", ex);
-            }
-        }
-    }
-
-    /**
-     * The Log Level:e
-     *
-     * @param log
-     * @param tr
-     */
-    public static void e(String log, Throwable tr) {
-        if (logFlag) {
-            String line = getFunctionName();
-            Log.e(tag, "{Thread:" + Thread.currentThread().getName() + "}"
-                    + "[" + mClassName + line + ":] " + log + "\n", tr);
-        }
+        return 0;
     }
 }
-

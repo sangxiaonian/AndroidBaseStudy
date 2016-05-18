@@ -10,14 +10,14 @@ import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.activity.Image3DActivity;
 import study.sang.androidbasestudy.activity.StackViewActivity;
 import study.sang.androidbasestudy.activity.TextSwitchActivity;
-import study.sang.androidbasestudy.activity.ViewPagerActivity;
+import study.sang.androidbasestudy.viewpager.ViewPagerActivity;
 import study.sang.androidbasestudy.activity.ViewSwitchActivity;
 import study.sang.androidbasestudy.utils.JLog;
 
 /**
  * 各种视图切换的类
  */
-public class ViewswitchActivity extends AppCompatActivity implements View.OnClickListener{
+public class ViewSwitchACtivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button bt_3D;
     private Button bt_stack;
@@ -59,11 +59,11 @@ public class ViewswitchActivity extends AppCompatActivity implements View.OnClic
                 c= TextSwitchActivity.class;
                 break;
             case R.id.bt_viewpager:
-                c= ViewPagerActivity.class;
+                c= ViewPagerTranActivity.class;
                 break;
 
         }
 
-        startActivity(new Intent(ViewswitchActivity.this,c));
+        startActivity(new Intent(ViewSwitchACtivity.this,c));
     }
 }

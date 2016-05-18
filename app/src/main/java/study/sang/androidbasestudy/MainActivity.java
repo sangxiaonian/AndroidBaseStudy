@@ -8,24 +8,14 @@ import android.widget.Button;
 
 import study.sang.androidbasestudy.Tran.ColockActivity;
 import study.sang.androidbasestudy.Tran.CustomActivity;
-import study.sang.androidbasestudy.Tran.ViewswitchActivity;
-import study.sang.androidbasestudy.activity.CalendarActivity;
+import study.sang.androidbasestudy.Tran.ViewSwitchACtivity;
 import study.sang.androidbasestudy.activity.CameraActivity;
-import study.sang.androidbasestudy.activity.ClockActivity;
-import study.sang.androidbasestudy.activity.DialoActivity;
 import study.sang.androidbasestudy.activity.DrawCricleActivity;
 import study.sang.androidbasestudy.activity.ExpandableActivity;
 import study.sang.androidbasestudy.activity.FragmnetTestActivity;
-import study.sang.androidbasestudy.activity.Image3DActivity;
 import study.sang.androidbasestudy.activity.NotifictionActivity;
-import study.sang.androidbasestudy.activity.PickerActivity;
-import study.sang.androidbasestudy.activity.RecycleActivity;
 import study.sang.androidbasestudy.activity.SeekBarActivity;
-import study.sang.androidbasestudy.activity.StackViewActivity;
-import study.sang.androidbasestudy.activity.TextSwitchActivity;
 import study.sang.androidbasestudy.activity.ToastActivity;
-import study.sang.androidbasestudy.activity.ViewSwitchActivity;
-import study.sang.androidbasestudy.utils.JLog;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -124,7 +114,7 @@ bt_sitch= (Button) findViewById(R.id.viewStitvh);
 
             //视图切换
             case R.id.viewStitvh:
-                c= ViewswitchActivity.class;
+                c= ViewSwitchACtivity.class;
                 break;
 
         }
