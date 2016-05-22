@@ -41,7 +41,6 @@
                 android:text="各类吐司" />
 
 
-
             <Button
                 android:id="@+id/bt_noti"
                 android:layout_width="match_parent"
@@ -72,29 +71,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="拍照" />
+
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/viewStitvh"
-                android:text="各种切换视图"
-                />
-            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="各种切换视图" />
+
+            <Button
                 android:id="@+id/time"
-                android:text="时间相关的空间"/>
-            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="时间相关的空间" />
+
+            <Button
                 android:id="@+id/bt_webView"
-                android:text="WebView"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="WebView" />
 
             <Button
                 android:id="@+id/bt_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="服务" />
+
+            <Button
+                android:id="@+id/bt_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="进度条" />
 
 
         </LinearLayout>
