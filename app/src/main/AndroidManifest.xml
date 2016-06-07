@@ -45,7 +45,8 @@
         <activity android:name=".viewpager.ViewPagerActivity" />
         <activity android:name=".Tran.ViewPagerTranActivity" />
         <activity android:name=".viewpager.ViewPagerFullActivity" />
-        <activity android:name=".activity.ProgressActivity"></activity>
+        <activity android:name=".activity.ProgressActivity" />
+        <activity android:name=".activity.Recycle_Ani_Activity"></activity>
     </application>
 
 </manifest>

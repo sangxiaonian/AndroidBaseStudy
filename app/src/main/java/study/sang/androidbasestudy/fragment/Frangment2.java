@@ -16,7 +16,7 @@ import study.sang.androidbasestudy.R;
  */
 public class Frangment2 extends Fragment{
 
-    public static final String TAG = "Fragment1";
+    public static final String TAG = "Fragment2";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

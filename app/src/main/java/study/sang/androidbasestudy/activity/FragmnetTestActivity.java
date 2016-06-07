@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.fragment.Frangment1;
 import study.sang.androidbasestudy.fragment.Frangment2;
+import study.sang.androidbasestudy.utils.JLog;
 
 public class FragmnetTestActivity extends FragmentActivity {
 
@@ -33,10 +34,12 @@ public class FragmnetTestActivity extends FragmentActivity {
     public void one(View view)
     {
         supportFragmentManager.beginTransaction().replace(R.id.fg,frangment1).commit();
+        JLog.i("第一个");
 
     }
 
     public void two(View view){
-        supportFragmentManager.beginTransaction().replace(R.id.fg,frangment1).commit();
+        supportFragmentManager.beginTransaction().replace(R.id.fg,frangment2).commit();
+        JLog.i("第2个");
     }
 }

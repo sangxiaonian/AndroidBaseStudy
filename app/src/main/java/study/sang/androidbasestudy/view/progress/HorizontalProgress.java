@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import study.sang.androidbasestudy.R;
-import study.sang.androidbasestudy.utils.JLog;
 import study.sang.androidbasestudy.utils.Utils;
 
 /**
@@ -145,7 +144,7 @@ public class HorizontalProgress extends ProgressBar {
 
 
         //需要画出的文本
-        String text =Utils.get2Double(radio*100) +"%";
+        String text = Utils.get2Double(radio*100) +"%";
 
         //文字的宽高
         textWidth = (int) mPaint.measureText(text);

@@ -22,5 +22,11 @@
         android:id="@+id/view_radio"
         android:text="动态添加，多行多列RadioButton"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cus_recycle"
+        android:text="recycleView 万能适配器演示"
+        />
 
 </LinearLayout>

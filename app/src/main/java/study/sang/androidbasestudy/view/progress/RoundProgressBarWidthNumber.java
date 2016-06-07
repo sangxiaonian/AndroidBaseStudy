@@ -5,11 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.net.wifi.WifiEnterpriseConfig;
 import android.util.AttributeSet;
 
 import study.sang.androidbasestudy.R;
-import study.sang.androidbasestudy.utils.JLog;
 import study.sang.androidbasestudy.utils.Utils;
 
 /**
