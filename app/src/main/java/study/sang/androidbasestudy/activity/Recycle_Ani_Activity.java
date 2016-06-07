@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,11 +18,14 @@ import java.util.List;
 
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.recycleview.adapter.CommonAdapter;
+import study.sang.androidbasestudy.recycleview.adapter.DragAdapter;
 import study.sang.androidbasestudy.recycleview.adapter.HeadAdapter;
 import study.sang.androidbasestudy.recycleview.adapter.HeaderSuppor;
 import study.sang.androidbasestudy.recycleview.adapter.MultiItemTypeSupport;
 import study.sang.androidbasestudy.recycleview.adapter.MultiItemsAdapter;
 import study.sang.androidbasestudy.recycleview.adapter.ViewHolder;
+import study.sang.androidbasestudy.recycleview.touchhelper.ItemTouchHelperInterface;
+import study.sang.androidbasestudy.recycleview.touchhelper.SimpleTouchHelperCallBack;
 import study.sang.androidbasestudy.utils.JLog;
 import study.sang.androidbasestudy.view.imageView.GlideCircleTransform;
 
@@ -34,7 +38,8 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
 
     private List<String> mDatas;
     private RecyclerView.LayoutManager manager;
-    private Button bt_com, bt_head, bt_mm;
+    private Button bt_com, bt_head, bt_mm, bt_drag;
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,9 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
         bt_com = (Button) findViewById(R.id.recy_com);
         bt_head = (Button) findViewById(R.id.recy_head);
         bt_mm = (Button) findViewById(R.id.recy_mum);
+        bt_drag = (Button) findViewById(R.id.recy_drag);
 
+        bt_drag.setOnClickListener(this);
         bt_com.setOnClickListener(this);
         bt_mm.setOnClickListener(this);
         bt_head.setOnClickListener(this);
@@ -78,7 +85,7 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
 
                         ImageView img = holder.getView(R.id.item_img);
                         //这里利用Glide来加载图片，并且实现圆形图片，在transform来实现
-                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.a).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
+                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
                                 .error(R.drawable.f).into(img);
                     }
                 };
@@ -99,7 +106,7 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
                         view.setText(s);
                         ImageView img = holder.getView(R.id.item_img);
                         //这里利用Glide来加载图片，并且实现圆形图片，在transform来实现
-                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.a).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
+                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
                                 .error(R.drawable.f).into(img);
                     }
                 };
@@ -132,9 +139,33 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
                     }
                 };
                 break;
+            case R.id.recy_drag:
+                JLog.i("点击了这里");
+                DragAdapter adapter1 = new DragAdapter<String>(Recycle_Ani_Activity.this, R.layout.item_recy_ani, mDatas) {
+                    @Override
+                    public void convert(ViewHolder holder, String o, int position) {
+                        TextView view = holder.getView(R.id.item_tv);
+                        view.setText(o);
+
+                        ImageView img = holder.getView(R.id.item_img);
+                        //这里利用Glide来加载图片，并且实现圆形图片，在transform来实现
+                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
+                                .error(R.drawable.f).into(img);
+                    }
+                };
+
+                ItemTouchHelper.Callback callback = new SimpleTouchHelperCallBack(adapter1);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setAdapter(adapter1);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(recyclerView);
+                break;
+            default:
+                break;
         }
 
-        recyclerView.setAdapter(adapter);
+        if (adapter != null)
+            recyclerView.setAdapter(adapter);
 
     }
 }
