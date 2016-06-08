@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import study.sang.androidbasestudy.utils.JLog;
@@ -106,5 +107,17 @@ public abstract class HeadAdapter<T> extends MultiItemsAdapter<T> {
 
     public void addHeads(int layoutID){
         mHeards.add(layoutID);
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(mDatas, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mDatas.remove(position);
+        notifyItemRemoved(position);
     }
 }

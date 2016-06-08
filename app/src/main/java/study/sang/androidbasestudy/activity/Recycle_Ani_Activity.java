@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,12 +32,11 @@ import study.sang.androidbasestudy.utils.JLog;
 import study.sang.androidbasestudy.view.imageView.GlideCircleTransform;
 
 /**
- * 带动画的RecycleView
+ * RecycleView 的万能适配器演示页面
  */
 public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
-
     private List<String> mDatas;
     private RecyclerView.LayoutManager manager;
     private Button bt_com, bt_head, bt_mm, bt_drag;
@@ -66,12 +67,12 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
         recyclerView.setLayoutManager(manager);
 
     }
-
+    RecyclerView.Adapter adapter = null;
 
     @Override
     public void onClick(View v) {
 
-        RecyclerView.Adapter adapter = null;
+
 
         switch (v.getId()) {
             //一般的布局
@@ -85,7 +86,7 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
 
                         ImageView img = holder.getView(R.id.item_img);
                         //这里利用Glide来加载图片，并且实现圆形图片，在transform来实现
-                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
+                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).placeholder(R.drawable.f)
                                 .error(R.drawable.f).into(img);
                     }
                 };
@@ -139,30 +140,14 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
                     }
                 };
                 break;
-            case R.id.recy_drag:
-                JLog.i("点击了这里");
-                DragAdapter adapter1 = new DragAdapter<String>(Recycle_Ani_Activity.this, R.layout.item_recy_ani, mDatas) {
-                    @Override
-                    public void convert(ViewHolder holder, String o, int position) {
-                        TextView view = holder.getView(R.id.item_tv);
-                        view.setText(o);
-
-                        ImageView img = holder.getView(R.id.item_img);
-                        //这里利用Glide来加载图片，并且实现圆形图片，在transform来实现
-                        Glide.with(Recycle_Ani_Activity.this).load(R.drawable.full2).transform(new GlideCircleTransform(Recycle_Ani_Activity.this)).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.f)
-                                .error(R.drawable.f).into(img);
-                    }
-                };
-
-                ItemTouchHelper.Callback callback = new SimpleTouchHelperCallBack(adapter1);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setAdapter(adapter1);
-                mItemTouchHelper = new ItemTouchHelper(callback);
-                mItemTouchHelper.attachToRecyclerView(recyclerView);
-                break;
             default:
                 break;
         }
+
+
+        //这里实现拖拽的功能
+        ItemTouchHelper helper = new ItemTouchHelper(new SimpleTouchHelperCallBack((ItemTouchHelperInterface) adapter));
+        helper.attachToRecyclerView(recyclerView);
 
         if (adapter != null)
             recyclerView.setAdapter(adapter);

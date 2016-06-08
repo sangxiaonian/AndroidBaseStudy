@@ -28,5 +28,11 @@
         android:id="@+id/cus_recycle"
         android:text="recycleView 万能适配器演示"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cus_drag"
+        android:text="recycleView 拖动条目的设置"
+        />
 
 </LinearLayout>

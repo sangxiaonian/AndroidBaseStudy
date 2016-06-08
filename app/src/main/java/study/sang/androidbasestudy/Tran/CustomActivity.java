@@ -9,6 +9,7 @@ import android.widget.Button;
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.activity.RadioGroupActivity;
 import study.sang.androidbasestudy.activity.RecycleActivity;
+import study.sang.androidbasestudy.activity.RecycleDragActivity;
 import study.sang.androidbasestudy.activity.Recycle_Ani_Activity;
 
 /**
@@ -45,10 +46,17 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.view_recycle:
                 c= RecycleActivity.class;
                 break;
-
+            //rectcleView的万能适配器
             case R.id.cus_recycle:
                 c= Recycle_Ani_Activity.class;
                 break;
+
+            //带有拖拽功能的adapter
+            case R.id.cus_drag:
+                c= RecycleDragActivity.class;
+                break;
+
+
         }
 
         startActivity(new Intent(CustomActivity.this,c));

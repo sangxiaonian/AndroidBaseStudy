@@ -21,16 +21,13 @@ public class ClockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_clock);
 
         chro = (Chronometer) findViewById(R.id.chr);
-        Log.i("aa", "开始");
 //
 
         chro.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                Log.i("aa","时钟走了"+(SystemClock.elapsedRealtime()-chronometer.getBase()));
                 if (SystemClock.elapsedRealtime()-chronometer.getBase()>=5000){
 //                    chronometer.stop();
-                    Log.i("aa","------------------------");
                     chro.stop();
                     chro.setBase(SystemClock.elapsedRealtime());
                     chro.start();
@@ -41,7 +38,6 @@ public class ClockActivity extends AppCompatActivity {
     }
 
     public void start(View v) {
-        Log.i("aa", "开始..............." + chro);
         chro.setBase(SystemClock.elapsedRealtime());
         chro.start();
     }

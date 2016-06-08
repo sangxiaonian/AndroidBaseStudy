@@ -91,7 +91,6 @@ public class DrawCirleView extends View {
                 currentX=newX;
                 scale(disY);
 
-                Log.i("aa","抬起了");
                 break;
         }
 
@@ -101,7 +100,6 @@ public class DrawCirleView extends View {
 
     //执行放大缩小
     private void scale(float disY){
-        Log.i("aa","-------"+disY+"执行了方法------");
         if (disY>50){
             radius+=10;
             ToastUtil.showTextToast(getContext(),"增大了");

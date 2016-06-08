@@ -31,7 +31,7 @@ public class SimpleTouchHelperCallBack extends ItemTouchHelper.Callback {
         int swipeFlag = ItemTouchHelper.START|ItemTouchHelper.END;
 
         //返回支持纵向拖动，横向滑动
-        return makeFlag(dragFlag,swipeFlag);
+        return makeMovementFlags(dragFlag,swipeFlag);
     }
 
 
