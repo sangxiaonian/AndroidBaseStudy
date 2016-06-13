@@ -17,7 +17,7 @@ import study.sang.androidbasestudy.activity.Recycle_Ani_Activity;
  */
 public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button bt_recy,bt_radio,bt_recy_ani;
+    private Button bt_recy,bt_radio,bt_recy_ani,bt_cus_drag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,13 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         bt_radio= (Button) findViewById(R.id.view_radio);
         bt_recy = (Button) findViewById(R.id.view_recycle);
         bt_recy_ani = (Button) findViewById(R.id.cus_recycle);
+        bt_cus_drag = (Button) findViewById(R.id.cus_drag);
 
 
         bt_recy.setOnClickListener(this);
         bt_radio.setOnClickListener(this);
         bt_recy_ani.setOnClickListener(this);
+        bt_cus_drag.setOnClickListener(this);
     }
 
     @Override

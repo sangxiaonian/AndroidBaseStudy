@@ -2,6 +2,7 @@ package study.sang.androidbasestudy.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -38,7 +39,7 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
 
     private RecyclerView recyclerView;
     private List<String> mDatas;
-    private RecyclerView.LayoutManager manager;
+    private GridLayoutManager manager;
     private Button bt_com, bt_head, bt_mm, bt_drag;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -46,7 +47,6 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle__ani_);
-        recyclerView = (RecyclerView) findViewById(R.id.recy_ani);
         bt_com = (Button) findViewById(R.id.recy_com);
         bt_head = (Button) findViewById(R.id.recy_head);
         bt_mm = (Button) findViewById(R.id.recy_mum);
@@ -63,8 +63,7 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
             mDatas.add(i + "");
         }
 
-        manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(manager);
+
 
     }
     RecyclerView.Adapter adapter = null;
@@ -144,13 +143,18 @@ public class Recycle_Ani_Activity extends AppCompatActivity implements View.OnCl
                 break;
         }
 
+        recyclerView = null;
+        recyclerView = (RecyclerView) findViewById(R.id.recy_ani);
+        manager = new GridLayoutManager(Recycle_Ani_Activity.this,3);
 
+        recyclerView.setLayoutManager(manager);
         //这里实现拖拽的功能
-        ItemTouchHelper helper = new ItemTouchHelper(new SimpleTouchHelperCallBack((ItemTouchHelperInterface) adapter));
-        helper.attachToRecyclerView(recyclerView);
+//        ItemTouchHelper helper = new ItemTouchHelper(new SimpleTouchHelperCallBack((ItemTouchHelperInterface) adapter));
+//        helper.attachToRecyclerView(recyclerView);
 
-        if (adapter != null)
+        if (adapter != null) {
             recyclerView.setAdapter(adapter);
+        }
 
     }
 }
