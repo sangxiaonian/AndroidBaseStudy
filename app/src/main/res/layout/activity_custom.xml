@@ -34,5 +34,11 @@
         android:id="@+id/cus_drag"
         android:text="recycleView 拖动条目的设置"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cus_shui"
+        android:text="水波纹效果"
+        />
 
 </LinearLayout>

@@ -11,13 +11,14 @@ import study.sang.androidbasestudy.activity.RadioGroupActivity;
 import study.sang.androidbasestudy.activity.RecycleActivity;
 import study.sang.androidbasestudy.activity.RecycleDragActivity;
 import study.sang.androidbasestudy.activity.Recycle_Ani_Activity;
+import study.sang.androidbasestudy.activity.ShuiBoWenActivity;
 
 /**
  * 自定义控件页面
  */
 public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button bt_recy,bt_radio,bt_recy_ani,bt_cus_drag;
+    private Button bt_recy,bt_radio,bt_recy_ani,bt_cus_drag,bt_shui;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,9 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         bt_recy = (Button) findViewById(R.id.view_recycle);
         bt_recy_ani = (Button) findViewById(R.id.cus_recycle);
         bt_cus_drag = (Button) findViewById(R.id.cus_drag);
+        bt_shui= (Button) findViewById(R.id.cus_shui);
 
+bt_shui.setOnClickListener(this);
 
         bt_recy.setOnClickListener(this);
         bt_radio.setOnClickListener(this);
@@ -56,6 +59,11 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
             //带有拖拽功能的adapter
             case R.id.cus_drag:
                 c= RecycleDragActivity.class;
+                break;
+
+            //水波纹效果
+            case R.id.cus_shui:
+                c= ShuiBoWenActivity.class;
                 break;
 
 
