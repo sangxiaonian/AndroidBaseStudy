@@ -1,17 +1,14 @@
 package study.sang.androidbasestudy.activity;
 
 import android.app.ExpandableListActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import study.sang.androidbasestudy.MainActivity;
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.utils.ToastUtil;
 
@@ -97,7 +94,7 @@ public class ExpandableActivity extends ExpandableListActivity {
 
         @Override
         public boolean isChildSelectable(int groupPosition, int childPosition) {
-            ToastUtil.showTextToast(ExpandableActivity.this, (String) getChild(groupPosition,childPosition));
+            ToastUtil.showToast(ExpandableActivity.this, (String) getChild(groupPosition,childPosition));
             return true;
         }
 

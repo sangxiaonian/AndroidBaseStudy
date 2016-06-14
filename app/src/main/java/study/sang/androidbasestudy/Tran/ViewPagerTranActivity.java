@@ -43,7 +43,7 @@ public class ViewPagerTranActivity extends AppCompatActivity implements View.OnC
         }
 
         if (c==null){
-            ToastUtil.showTextToast(ViewPagerTranActivity.this,"还没有定义");
+            ToastUtil.showToast(ViewPagerTranActivity.this,"还没有定义");
         }else {
             startActivity(new Intent(ViewPagerTranActivity.this,c));
         }

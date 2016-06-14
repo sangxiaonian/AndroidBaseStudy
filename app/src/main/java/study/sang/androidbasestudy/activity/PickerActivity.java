@@ -2,7 +2,6 @@ package study.sang.androidbasestudy.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
@@ -28,7 +27,7 @@ public class PickerActivity extends AppCompatActivity {
         time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                ToastUtil.showTextToast(PickerActivity.this, hourOfDay + "时" + minute + "分");
+                ToastUtil.showToast(PickerActivity.this, hourOfDay + "时" + minute + "分");
 
             }
         });
@@ -40,7 +39,7 @@ public class PickerActivity extends AppCompatActivity {
         data.init(year, month, day, new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                ToastUtil.showTextToast(PickerActivity.this, year + "年" + monthOfYear + "月" + dayOfMonth + "日");
+                ToastUtil.showToast(PickerActivity.this, year + "年" + monthOfYear + "月" + dayOfMonth + "日");
 
             }
         });
@@ -52,7 +51,7 @@ public class PickerActivity extends AppCompatActivity {
         num.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                ToastUtil.showTextToast(PickerActivity.this, oldVal + ">>>>" + newVal);
+                ToastUtil.showToast(PickerActivity.this, oldVal + ">>>>" + newVal);
             }
         });
     }

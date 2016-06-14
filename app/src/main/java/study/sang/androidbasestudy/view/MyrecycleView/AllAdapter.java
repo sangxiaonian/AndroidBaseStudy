@@ -136,7 +136,7 @@ public class AllAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     anInt = holder.getPosition();
                     data.remove(anInt);
-                    ToastUtil.showTextToast(context, anInt + ">>>>>>>>>" + data.get(anInt));
+                    ToastUtil.showToast(context, anInt + ">>>>>>>>>" + data.get(anInt));
                     notifyItemRemoved(anInt);
                 }
             });

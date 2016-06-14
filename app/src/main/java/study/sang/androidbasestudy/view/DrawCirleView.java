@@ -5,10 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import study.sang.androidbasestudy.utils.ToastUtil;
 
@@ -102,14 +100,14 @@ public class DrawCirleView extends View {
     private void scale(float disY){
         if (disY>50){
             radius+=10;
-            ToastUtil.showTextToast(getContext(),"增大了");
+            ToastUtil.showToast(getContext(),"增大了");
         }else if (disY<-50){
             radius-=10;
             if (radius<=3){
                 radius=3;
-                ToastUtil.showTextToast(getContext(),"已经最小了");
+                ToastUtil.showToast(getContext(),"已经最小了");
             }else
-                ToastUtil.showTextToast(getContext(),"缩小了");
+                ToastUtil.showToast(getContext(),"缩小了");
         }
         postInvalidate();
     }

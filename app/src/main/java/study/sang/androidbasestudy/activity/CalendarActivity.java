@@ -20,7 +20,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
-                ToastUtil.showTextToast(CalendarActivity.this,year+"年"+month+"月"+dayOfMonth+"日");
+                ToastUtil.showToast(CalendarActivity.this,year+"年"+month+"月"+dayOfMonth+"日");
             }
         });
     }

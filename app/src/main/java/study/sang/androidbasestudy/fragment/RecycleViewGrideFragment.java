@@ -1,5 +1,6 @@
 package study.sang.androidbasestudy.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,9 +17,11 @@ import java.util.List;
 
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.activity.RecycleDragActivity;
+import study.sang.androidbasestudy.bean.ClickItem;
 import study.sang.androidbasestudy.recycleview.adapter.CommonAdapter;
 import study.sang.androidbasestudy.recycleview.adapter.ViewHolder;
 import study.sang.androidbasestudy.utils.JLog;
+import study.sang.androidbasestudy.utils.ToastUtil;
 
 
 public class RecycleViewGrideFragment extends Fragment {
@@ -25,8 +29,10 @@ public class RecycleViewGrideFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private View inflate;
-    private List<String> mDatas;
-    private CommonAdapter<String> adapter;
+    private List<ClickItem> mDatas;
+    private CommonAdapter<ClickItem> adapter;
+
+    private int c;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,12 +48,30 @@ public class RecycleViewGrideFragment extends Fragment {
 
         mDatas = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            mDatas.add(i + "");
+            ClickItem item = new ClickItem();
+            item.title=i+"";
+            mDatas.add(item);
         }
-        adapter = new CommonAdapter<String>(getActivity(), R.layout.item_blank, mDatas) {
+        adapter = new CommonAdapter<ClickItem>(getActivity(), R.layout.item_blank, mDatas) {
             @Override
-            public void convert(ViewHolder holder, String s, int position) {
-//                holder.getView(R.id.)
+            public void convert(final ViewHolder holder, final ClickItem s, final int position) {
+                 Button button = holder.getView(R.id.tv_blank);
+                button.setText(s.title);
+                if (s.isClick){
+                    button.setBackgroundColor(Color.RED);
+                }else {
+                    button.setBackgroundColor(Color.WHITE);
+                }
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtil.showToast(getActivity(),position+"  被点击了 "+s.title);
+                        s.isClick=true;
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
             }
         };
 
@@ -64,6 +88,7 @@ public class RecycleViewGrideFragment extends Fragment {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 Collections.swap(mDatas, viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                adapter.notifyDataSetChanged();
                 return true;
             }
 

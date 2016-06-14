@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import study.sang.androidbasestudy.utils.JLog;
 
 /**
  * 作者： ${桑小年} on 2016/6/13.
@@ -40,7 +39,7 @@ public class ShuiBoWenView extends LinearLayout {
     private int[] loaction;
 
     //是否进行绘制
-    private boolean isDraw=false;
+    private boolean isDraw = false;
 
     public ShuiBoWenView(Context context) {
         super(context);
@@ -70,7 +69,6 @@ public class ShuiBoWenView extends LinearLayout {
     }
 
 
-
     //重写触摸事件，每次down事件中，开始测量绘制
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -78,7 +76,7 @@ public class ShuiBoWenView extends LinearLayout {
             case MotionEvent.ACTION_DOWN:
 
                 //down事件中,开始绘制
-                isDraw=true;
+                isDraw = true;
 
                 currentRadio = 0;
                 //点击的位置，也是水波纹的圆心
@@ -94,8 +92,6 @@ public class ShuiBoWenView extends LinearLayout {
                 //找到对应的子控件
                 targetView = findTargerView(downX, downY);
 
-
-                JLog.i(targetView + "centerX:" + centerX + "   centerY:" + centerY + "\ndownX:" + downX + "\ndownY:" + downY);
 
                 //如果没有子控件被点击，就直接结束
                 if (targetView != null) {
@@ -117,8 +113,8 @@ public class ShuiBoWenView extends LinearLayout {
                 }
                 break;
             default:
-                isDraw=false;
-                currentRadio=0;
+                isDraw = false;
+                currentRadio = 0;
                 postInvalidate();
                 break;
         }
@@ -129,14 +125,14 @@ public class ShuiBoWenView extends LinearLayout {
     //划定区域
     private void clipRectf() {
         loaction = new int[2];
-         getLocationOnScreen(loaction);
-        rectF.top=rectF.top-loaction[1];
-        rectF.bottom=rectF.bottom-loaction[1];
-        rectF.left-=loaction[0];
-        rectF.right-=loaction[0];
+        getLocationOnScreen(loaction);
+        rectF.top = rectF.top - loaction[1];
+        rectF.bottom = rectF.bottom - loaction[1];
+        rectF.left -= loaction[0];
+        rectF.right -= loaction[0];
 
-        centerX-=loaction[0];
-        centerY-=loaction[1];
+        centerX -= loaction[0];
+        centerY -= loaction[1];
 
 
     }
@@ -154,11 +150,11 @@ public class ShuiBoWenView extends LinearLayout {
 
         if (isDraw) {
 
-                //限制绘制区域
-                canvas.clipRect(rectF);
-                canvas.drawCircle(centerX, centerY, currentRadio, mPaint);
-                currentRadio += 10;
-                postInvalidateDelayed(30);
+            //限制绘制区域
+            canvas.clipRect(rectF);
+            canvas.drawCircle(centerX, centerY, currentRadio, mPaint);
+            currentRadio += 10;
+            postInvalidateDelayed(30);
 
 
         } else {
