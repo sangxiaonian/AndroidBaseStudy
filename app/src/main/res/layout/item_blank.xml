@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_margin="20dp"
-    app:cardElevation="5dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:layout_height="100dp">
-<TextView
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/tv_blank"
-    android:background="#ffffff"
-     />
+    android:layout_margin="20dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="10dp"
+    app:cardElevation="5dp">
+
+    <study.sang.androidbasestudy.view.ShuiBoWenView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/tv_blank"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#ffffff"
+            android:clickable="true" />
+    </study.sang.androidbasestudy.view.ShuiBoWenView>
+
 </android.support.v7.widget.CardView>

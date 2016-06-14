@@ -36,11 +36,16 @@ public class ShuiBoWenView extends LinearLayout {
 
     private int currentRadio;
 
+    //父控件的绝对坐标
+    private int[] loaction;
+
+    //是否进行绘制
+    private boolean isDraw=false;
+
     public ShuiBoWenView(Context context) {
         super(context);
         initView();
     }
-
 
 
     public ShuiBoWenView(Context context, AttributeSet attrs) {
@@ -54,22 +59,28 @@ public class ShuiBoWenView extends LinearLayout {
     }
 
     private void initView() {
-        mPaint=new Paint();
+        mPaint = new Paint();
         //抗锯齿
         mPaint.setAntiAlias(true);
         //实心
         mPaint.setStyle(Paint.Style.FILL);
         //颜色
         mPaint.setColor(Color.RED);
+        mPaint.setAlpha(50);
     }
+
+
 
     //重写触摸事件，每次down事件中，开始测量绘制
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                JLog.i("被点击了");
-                currentRadio=0;
+
+                //down事件中,开始绘制
+                isDraw=true;
+
+                currentRadio = 0;
                 //点击的位置，也是水波纹的圆心
                 int downX = (int) event.getRawX();
                 int downY = (int) event.getRawY();
@@ -77,28 +88,57 @@ public class ShuiBoWenView extends LinearLayout {
                 centerX = downX;
                 centerY = downY;
 
-                //找到对应的子控件
-                targetView=findTargerView(downX, downY);
+                //父控件的位置
 
-                JLog.i(targetView+"centerX:"+centerX+"   centerY:"+centerY);
+
+                //找到对应的子控件
+                targetView = findTargerView(downX, downY);
+
+
+                JLog.i(targetView + "centerX:" + centerX + "   centerY:" + centerY + "\ndownX:" + downX + "\ndownY:" + downY);
 
                 //如果没有子控件被点击，就直接结束
-                if (targetView==null) return false;
-                //寻找圆的半径，要铺满整个子控件，那么半径必须是距离控件边距最大的那个值
-                int left = (int) (downX-rectF.left);
-                int right = (int) (rectF.right-downX);
-                int top = (int) (rectF.top-downY);
-                int bottom = (int) (rectF.bottom - downY);
+                if (targetView != null) {
 
-                //获取半径
-                radio = Math.max(Math.max(left,right),Math.max(top,bottom));
-                JLog.i("半径："+radio);
-                //重新绘制
+                    //寻找圆的半径，要铺满整个子控件，那么半径必须是距离控件边距最大的那个值
+                    int left = (int) (centerX - rectF.left);
+                    int right = (int) (rectF.right - centerX);
+                    int top = (int) (rectF.top - centerY);
+                    int bottom = (int) (rectF.bottom - centerY);
+
+                    //获取半径
+                    radio = Math.max(Math.max(left, right), Math.max(top, bottom));
+
+                    //矫正绘制区域
+                    clipRectf();
+
+                    //重新绘制
+                    postInvalidate();
+                }
+                break;
+            default:
+                isDraw=false;
+                currentRadio=0;
                 postInvalidate();
                 break;
         }
 
-        return super.onTouchEvent(event);
+        return super.dispatchTouchEvent(event);
+    }
+
+    //划定区域
+    private void clipRectf() {
+        loaction = new int[2];
+         getLocationOnScreen(loaction);
+        rectF.top=rectF.top-loaction[1];
+        rectF.bottom=rectF.bottom-loaction[1];
+        rectF.left-=loaction[0];
+        rectF.right-=loaction[0];
+
+        centerX-=loaction[0];
+        centerY-=loaction[1];
+
+
     }
 
     //在draw中被调用的方法，用来绘制子控件
@@ -106,22 +146,32 @@ public class ShuiBoWenView extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
 
-        JLog.i("开始绘制");
-
         //子控件绘制完成后，开始绘制水波纹
         canvas.save();
-        if (targetView!=null){
-            //限制绘制区域
-            canvas.clipRect(rectF);
 
-            canvas.drawCircle(centerX,centerY,radio,mPaint);
-            postInvalidateDelayed(30);
+        if (targetView == null) return;
+
+
+        if (isDraw) {
+
+                //限制绘制区域
+                canvas.clipRect(rectF);
+                canvas.drawCircle(centerX, centerY, currentRadio, mPaint);
+                currentRadio += 10;
+                postInvalidateDelayed(30);
+
+
+        } else {
+            canvas.clipRect(rectF);
+            canvas.drawCircle(centerX, centerY, currentRadio, mPaint);
         }
         canvas.restore();
     }
 
+
     /**
      * 找到被点击的子控件
+     *
      * @param downX
      * @param downY
      * @return
@@ -130,7 +180,7 @@ public class ShuiBoWenView extends LinearLayout {
         ArrayList<View> touchables = getTouchables();//此方法会返回所有被点击的控件
         View touchable = null;
 
-        if (touchables==null){
+        if (touchables == null) {
             return touchable;
         }
 
@@ -141,15 +191,16 @@ public class ShuiBoWenView extends LinearLayout {
             child.getLocationOnScreen(location);
 
             int left = location[0];
-            int top =location[1];
-            int right = left+child.getMeasuredWidth();
-            int bottom = top+child.getMeasuredHeight();
+            int top = location[1];
+            int right = left + child.getMeasuredWidth();
+            int bottom = top + child.getMeasuredHeight();
             //获取该控件所在区域的矩形
-            rectF = new RectF(left,top,right,bottom);
+            RectF rectF = new RectF(left, top, right, bottom);
 
             //如果这个子控件的位置包含点击的位置，说明点击到该控件了
-            if (rectF.contains(downX,downY)){
+            if (rectF.contains(downX, downY)) {
                 touchable = child;
+                this.rectF = rectF;
             }
 
         }

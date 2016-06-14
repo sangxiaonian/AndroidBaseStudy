@@ -49,7 +49,6 @@ public class RecycleViewLinFragment extends Fragment {
             }
         };
 
-
         inflate = inflater.inflate(R.layout.fragment_recycle_view_gride, container, false);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.fra_gride);
 
