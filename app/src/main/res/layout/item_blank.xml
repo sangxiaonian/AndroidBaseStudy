@@ -7,6 +7,7 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="vertical"
     android:padding="10dp"
+
     app:cardElevation="5dp">
 
     <study.sang.androidbasestudy.view.ShuiBoWenView
