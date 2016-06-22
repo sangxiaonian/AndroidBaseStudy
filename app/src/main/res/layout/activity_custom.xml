@@ -40,5 +40,17 @@
         android:id="@+id/cus_shui"
         android:text="水波纹效果"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cus_dragview"
+        android:text="拖拽控件"
+        />
+ <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cus_draw"
+        android:text="自定义侧滑菜单"
+        />
 
 </LinearLayout>

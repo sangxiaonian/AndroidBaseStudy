@@ -1,4 +1,4 @@
-package study.sang.androidbasestudy.view;
+package study.sang.androidbasestudy.view.shuibowen;
 
 import android.content.Context;
 import android.graphics.Canvas;

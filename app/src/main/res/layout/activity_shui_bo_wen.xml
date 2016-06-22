@@ -12,7 +12,7 @@
         android:layout_margin="20dp"
         android:text="aa" />
 
-    <study.sang.androidbasestudy.view.ShuiBoWenView
+    <study.sang.androidbasestudy.view.shuibowen.ShuiBoWenView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -48,6 +48,6 @@
 
 
 
-    </study.sang.androidbasestudy.view.ShuiBoWenView>
+    </study.sang.androidbasestudy.view.shuibowen.ShuiBoWenView>
 
 </LinearLayout>

@@ -166,6 +166,7 @@ public class MyRadioGroup extends ViewGroup implements View.OnClickListener{
                 int startX = mX + childMarginHorizontal + getPaddingLeft()
                         + sX[mY];
                 int startY = mY * v.getMeasuredHeight() + (mY + 1)
+
                         * childMarginVertical;
                 v.layout(startX, startY, startX + v.getMeasuredWidth(), startY
                         + v.getMeasuredHeight());

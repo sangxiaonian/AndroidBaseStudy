@@ -3,7 +3,9 @@ package study.sang.androidbasestudy;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import study.sang.androidbasestudy.Tran.ColockActivity;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button bt_noti, bt_dialog, bt_recycle, bt_frag, bt_camera, bt_time, bt_sitch;
 
+    private Toolbar tb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,16 +41,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListener() {
         bt_progress.setOnClickListener(this);
         bt_run.setOnClickListener(this);
-
         bt_seekBar.setOnClickListener(this);
-
         bt_toast.setOnClickListener(this);
-
         bt_noti.setOnClickListener(this);
         bt_dialog.setOnClickListener(this);
         bt_recycle.setOnClickListener(this);
         bt_frag.setOnClickListener(this);
-
         bt_camera.setOnClickListener(this);
         bt_time.setOnClickListener(this);
         bt_sitch.setOnClickListener(this);
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initViews() {
 
+        tb = (Toolbar) findViewById(R.id.tb);
+        setSupportActionBar(tb);
         bt_run = (Button) findViewById(R.id.bt_run);
         bt_time = (Button) findViewById(R.id.time);
         bt_seekBar = (Button) findViewById(R.id.bt_seekBar);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="#fedcba"
+    tools:context="study.sang.androidbasestudy.activity.ViewDragHelperActivity">
+
+    <study.sang.androidbasestudy.view.ViewDrag.CustomDragLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:background="#9abcde"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tv_drag1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#abcdef"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="DragFirst" />
+
+        <TextView
+        android:layout_gravity="center_horizontal"
+            android:id="@+id/tv_drag2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#aaaaaa"
+            android:gravity="center"
+            android:text="DragSecond" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tv_drag3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#fedcba"
+            android:gravity="center"
+            android:text="DragThird" />
+
+        <Button
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/bt_drag"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#bcda98"
+            android:gravity="center"
+            android:text="Button_drag" />
+
+    </study.sang.androidbasestudy.view.ViewDrag.CustomDragLayout>
+
+</RelativeLayout>

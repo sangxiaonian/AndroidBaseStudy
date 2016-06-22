@@ -1,4 +1,4 @@
-package study.sang.androidbasestudy.view;
+package study.sang.androidbasestudy.view.shuibowen;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -44,7 +44,7 @@ public class ShuiBoWenView extends LinearLayout {
     //是否进行绘制
     private boolean isDraw = false;
     //水波纹完成时间
-    private long time = 5000;
+    private long time = 500;
     //水波纹绘制次数
     private double times = time / 30;
 
@@ -53,9 +53,11 @@ public class ShuiBoWenView extends LinearLayout {
 
     //圆心在X方向偏差绝对值
     private double gapX;
+
    //圆心在Y方向偏差绝对值
     private double gapY;
-    private double centerOffsetY;
+
+    private int color = Color.RED;
 
     public ShuiBoWenView(Context context) {
         super(context);
@@ -80,7 +82,7 @@ public class ShuiBoWenView extends LinearLayout {
         //实心
         mPaint.setStyle(Paint.Style.FILL);
         //颜色
-        mPaint.setColor(Color.RED);
+        mPaint.setColor(color);
         mPaint.setAlpha(50);
     }
 
@@ -104,29 +106,18 @@ public class ShuiBoWenView extends LinearLayout {
                 centerX = downX;
                 centerY = downY;
 
-                //父控件的位置
-
-
                 //找到对应的子控件
                 targetView = findTargerView(downX, downY);
-
 
                 //如果没有子控件被点击，就直接结束
                 if (targetView != null) {
                     //矫正绘制区域
                     clipRectf();
-                    //寻找圆的半径，要铺满整个子控件，那么半径必须是距离控件边距最大的那个值
-                    int left = (int) (centerX - rectF.left);
-                    int right = (int) (rectF.right - centerX);
-                    int top = (int) (rectF.top - centerY);
-                    int bottom = (int) (rectF.bottom - centerY);
-
                     gapX =  (centerX-(rectF.left+rectF.right)/2);
                     gapY =  (centerY-(rectF.top+rectF.bottom)/2);
                     //获取半径
                     radio = (int) Math.max(rectF.width(),rectF.height())/2;
                     centerOffsetX = (gapX*1.0 / (times));
-                    centerOffsetY = (gapY*1.0 / (times));
                     //重新绘制
                     postInvalidate();
 
@@ -172,7 +163,7 @@ public class ShuiBoWenView extends LinearLayout {
             //计算圆心偏移量
             if (currentRadio <= radio) {
                 centerX -= centerOffsetX;
-                centerY-=  centerOffsetY;
+//                centerY-=  centerOffsetY;
                 JLog.i(centerY+"");
             }
             //限制绘制区域
@@ -234,5 +225,13 @@ public class ShuiBoWenView extends LinearLayout {
     public void setComplete(long time) {
         this.time = time;
         times = time / 30;
+    }
+
+    /**
+     * 设置水波纹颜色值
+     * @param color
+     */
+    public void setWaveColor(int color){
+        this.color=color;
     }
 }

@@ -48,7 +48,9 @@
         <activity android:name=".activity.ProgressActivity" />
         <activity android:name=".activity.Recycle_Ani_Activity" />
         <activity android:name=".activity.RecycleDragActivity" />
-        <activity android:name=".activity.ShuiBoWenActivity"></activity>
+        <activity android:name=".activity.ShuiBoWenActivity" />
+        <activity android:name=".activity.ViewDragHelperActivity" />
+        <activity android:name=".activity.DrawLayoutActivity"></activity>
     </application>
 
 </manifest>
