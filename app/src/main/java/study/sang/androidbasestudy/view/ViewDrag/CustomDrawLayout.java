@@ -1,6 +1,7 @@
 package study.sang.androidbasestudy.view.ViewDrag;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,106 +17,169 @@ import study.sang.androidbasestudy.utils.JLog;
  * @Author：桑小年
  * @Data：2016/6/22 16:39
  */
-public class CustomDrawLayout extends ViewGroup {
+public class CustomDrawLayout extends LinearLayout {
 
-    private View left,//左侧控件
-            center; //中间显示的控件
 
-    private ViewDragHelper dragHelper;
-    private int centerWidth;
+    private View centerView, leftView;
+    private ViewDragHelper helper;
+
+    private final int LAYOUT = HORIZONTAL;
+    private ViewGroup.LayoutParams leftParams;
+    private ViewGroup.LayoutParams centerParams;
+    private int wideSize;
+    private int heightSoze;
+
+    private Point oripoint = new Point();
+    private Point resultPoing = new Point(-20,0);
 
     public CustomDrawLayout(Context context) {
         super(context);
-        intiView();
+        setOrientation(LAYOUT);
+        initView();
     }
 
     public CustomDrawLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        intiView();
+        setOrientation(LAYOUT);
+        initView();
     }
 
     public CustomDrawLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        intiView();
+        setOrientation(LAYOUT);
+        initView();
     }
 
-
-    private void intiView() {
-        dragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
+    private void initView() {
+        helper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
-                JLog.i(child.toString());
-                return child == left;
-            }
-
-            @Override
-            public void onEdgeDragStarted(int edgeFlags, int pointerId) {
-                dragHelper.captureChildView(left, pointerId);
+                return child == leftView;
             }
 
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
-                if (left >= 0) {
-                    left = 0;
+                if (left>=-20){
+                    left=-20;
                 }
-                int l = -child.getMeasuredWidth();
-                if (left <= l) {
-                    left = l;
+                if (left<=-child.getMeasuredWidth()){
+                    left=-child.getMeasuredWidth();
                 }
+
                 return left;
             }
 
-//            @Override
-//            public int getViewHorizontalDragRange(View child) {
-//                return child.getMeasuredWidth();
-//            }
+            @Override
+            public void onEdgeDragStarted(int edgeFlags, int pointerId) {
+                super.onEdgeDragStarted(edgeFlags, pointerId);
+                helper.captureChildView(leftView, pointerId);
+            }
+
+            @Override
+            public void onViewReleased(View releasedChild, float xvel, float yvel) {
+                super.onViewReleased(releasedChild, xvel, yvel);
+                JLog.i("xvel:"+xvel+"yvel:"+yvel);
+
+                int width = releasedChild.getWidth();
+               boolean open= releasedChild.getLeft()+width>width/2;
+
+                if (open){
+                    //出现
+                    helper.settleCapturedViewAt(resultPoing.x,resultPoing.y);
+                }else{
+                    //隐藏
+                    helper.settleCapturedViewAt(oripoint.x,oripoint.y);
+
+                }
+                postInvalidate();
+            }
         });
-//        dragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
-    }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-//        super.onLayout(changed,l,t,r,b);
-        int centerX=0 ,centerY=0;
-        centerX = center.getLeft();
-        centerY = center.getTop();
-        center.layout(centerX,centerY,centerX+center.getMeasuredWidth(),centerY+center.getMeasuredHeight());
-        int leftX = getLeft()-left.getMeasuredWidth();
-        int leftY = left.getHeight();
-        JLog.i("leftX:"+leftX+"centerX:"+centerX+"getLeft():"+getLeft());
-        left.layout(getLeft()-left.getMeasuredWidth(),left.getTop(),getLeft(),left.getHeight());
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        measureChild(center, widthMeasureSpec, heightMeasureSpec);
-        centerWidth = center.getMeasuredWidth();
-        measureChild(left, widthMeasureSpec, heightMeasureSpec);
-        int leftWidth = left.getMeasuredWidth();
-        JLog.i("centerWidth:"+centerWidth+"leftWidth:"+leftWidth);
-        setMeasuredDimension(leftWidth+centerWidth,heightMeasureSpec);
-
+        helper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
     }
 
 
     @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        left = getChildAt(0);
-        center = getChildAt(1);
+    public void computeScroll() {
+       if (helper.continueSettling(true)){
+           postInvalidate();
+       }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        dragHelper.processTouchEvent(event);
-
+        helper.processTouchEvent(event);
         return true;
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return dragHelper.shouldInterceptTouchEvent(ev);
+        return helper.shouldInterceptTouchEvent(ev);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        leftView = getChildAt(1);
+        centerView = getChildAt(0);
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        wideSize = MeasureSpec.getSize(widthMeasureSpec);
+        heightSoze = MeasureSpec.getSize(heightMeasureSpec);
+        setMeasuredDimension(wideSize, heightSoze);
+        JLog.i(leftView.toString());
+
+
+        MarginLayoutParams lp = (MarginLayoutParams)
+                leftView.getLayoutParams();
+
+        final int drawerWidthSpec = getChildMeasureSpec(widthMeasureSpec,
+                lp.leftMargin + lp.rightMargin,
+                lp.width);
+        final int drawerHeightSpec = getChildMeasureSpec(heightMeasureSpec,
+                lp.topMargin + lp.bottomMargin,
+                lp.height);
+        leftView.measure(drawerWidthSpec, drawerHeightSpec);
+
+        JLog.i("drawerHeightSpec:"+drawerHeightSpec+"heitht:"+leftView.getMeasuredHeight());
+
+
+        lp = (MarginLayoutParams) centerView.getLayoutParams();
+        final int contentWidthSpec = MeasureSpec.makeMeasureSpec(
+                wideSize - lp.leftMargin - lp.rightMargin, MeasureSpec.EXACTLY);
+        final int contentHeightSpec = MeasureSpec.makeMeasureSpec(
+                heightSoze - lp.topMargin - lp.bottomMargin, MeasureSpec.EXACTLY);
+        centerView.measure(contentWidthSpec, contentHeightSpec);
+
+
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+
+        View menuView = leftView;
+        View contentView = centerView;
+
+        MarginLayoutParams lp = (MarginLayoutParams) contentView.getLayoutParams();
+        contentView.layout(lp.leftMargin, lp.topMargin,
+                lp.leftMargin + contentView.getMeasuredWidth(),
+                lp.topMargin + contentView.getMeasuredHeight());
+
+        lp = (MarginLayoutParams) menuView.getLayoutParams();
+
+        final int menuWidth = menuView.getMeasuredWidth();
+        int childLeft = -menuWidth ;
+        menuView.layout(childLeft, lp.topMargin, childLeft + menuWidth,
+                lp.topMargin + menuView.getMeasuredHeight());
+
+        oripoint.x=menuView.getLeft();
+        oripoint.y=menuView.getTop();
+
     }
 }

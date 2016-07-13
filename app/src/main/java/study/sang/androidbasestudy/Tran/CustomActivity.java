@@ -7,20 +7,24 @@ import android.view.View;
 import android.widget.Button;
 
 import study.sang.androidbasestudy.R;
+import study.sang.androidbasestudy.activity.BesizerIndexActivity;
 import study.sang.androidbasestudy.activity.DrawLayoutActivity;
+import study.sang.androidbasestudy.activity.HeartViewActivity;
 import study.sang.androidbasestudy.activity.RadioGroupActivity;
 import study.sang.androidbasestudy.activity.RecycleActivity;
 import study.sang.androidbasestudy.activity.RecycleDragActivity;
 import study.sang.androidbasestudy.activity.Recycle_Ani_Activity;
 import study.sang.androidbasestudy.activity.ShuiBoWenActivity;
 import study.sang.androidbasestudy.activity.ViewDragHelperActivity;
+import study.sang.androidbasestudy.view.BezierActivity;
 
 /**
  * 自定义控件页面
  */
 public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button bt_recy, bt_radio, bt_recy_ani, bt_cus_drag, bt_shui,bt_drag,bt_draw;
+    private Button bt_recy, bt_radio, bt_recy_ani, bt_cus_drag, bt_shui,bt_drag,bt_draw,bt_besizer
+            ,bt_heart ,bt_index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,14 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         bt_shui = (Button) findViewById(R.id.cus_shui);
         bt_drag = (Button) findViewById(R.id.cus_dragview);
         bt_draw= (Button) findViewById(R.id.cus_draw);
+        bt_besizer = (Button) findViewById(R.id.besizer);
+        bt_heart = (Button) findViewById(R.id.heart_view);
+        bt_index = (Button) findViewById(R.id.index_view);
 
+
+        bt_index.setOnClickListener(this);
+        bt_heart.setOnClickListener(this);
+        bt_besizer.setOnClickListener(this);
         bt_draw.setOnClickListener(this);
         bt_shui.setOnClickListener(this);
         bt_drag.setOnClickListener(this);
@@ -78,6 +89,18 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
             //ViewDragHelper 联系
             case R.id.cus_draw:
                 c = DrawLayoutActivity.class;
+                break;
+
+            //贝塞尔曲线练习
+            case R.id.besizer:
+                c = BezierActivity.class;
+                break;
+            //心联系
+            case R.id.heart_view:
+                c= HeartViewActivity.class;
+                break;
+            case R.id.index_view:
+                c= BesizerIndexActivity.class;
                 break;
         }
 

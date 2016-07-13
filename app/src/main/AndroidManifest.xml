@@ -50,7 +50,10 @@
         <activity android:name=".activity.RecycleDragActivity" />
         <activity android:name=".activity.ShuiBoWenActivity" />
         <activity android:name=".activity.ViewDragHelperActivity" />
-        <activity android:name=".activity.DrawLayoutActivity"></activity>
+        <activity android:name=".activity.DrawLayoutActivity" />
+        <activity android:name=".view.BezierActivity" />
+        <activity android:name=".activity.HeartViewActivity" />
+        <activity android:name=".activity.BesizerIndexActivity"></activity>
     </application>
 
 </manifest>
