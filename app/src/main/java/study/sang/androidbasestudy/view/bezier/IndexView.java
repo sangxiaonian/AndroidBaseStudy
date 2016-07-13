@@ -172,6 +172,7 @@ public class IndexView extends RadioGroup {
         RadioButton view = (RadioButton) LayoutInflater.from(getContext()).inflate(layout,this,false);
         view.setText(name);
         childs.add(name);
+
         addView(view,childs.size() - 1);
         view.setTag(childs.size() - 1);
         LinearLayout.LayoutParams lp = new LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
