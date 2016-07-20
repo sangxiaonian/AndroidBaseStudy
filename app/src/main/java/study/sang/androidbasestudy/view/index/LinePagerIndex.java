@@ -51,6 +51,7 @@ public class LinePagerIndex extends BasePagerIndex {
         setGravity(Gravity.CENTER);
         textView.setClickable(true);
         addView(textView, params);
+
         textView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +60,7 @@ public class LinePagerIndex extends BasePagerIndex {
                 ((TextView) v).setTextColor(Color.RED);
                 for (int i = 0; i < LinePagerIndex.this.getChildCount(); i++) {
                     if (index == i) {
-                        postAni(index);
+                        moveIndex(index);
                         continue;
                     } else {
                         ((TextView) LinePagerIndex.this.getChildAt(i)).setTextColor(Color.BLACK);

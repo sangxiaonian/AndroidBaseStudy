@@ -10,6 +10,19 @@
     android:orientation="vertical"
     tools:context="study.sang.androidbasestudy.activity.BesizerIndexActivity">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_index"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下一个"
+        android:onClick="next"
+        />
+
     <study.sang.androidbasestudy.view.bezier.IndexView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -21,7 +34,6 @@
     <study.sang.androidbasestudy.view.index.LinePagerIndex
         android:layout_marginTop="10dp"
         android:id="@+id/lin_index"
-        android:padding="5dp"
         android:layout_width="match_parent"
         android:background="#ffffff"
         android:layout_height="wrap_content">
@@ -30,8 +42,29 @@
     <study.sang.androidbasestudy.view.index.TrianglePagerIndex
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:id="@+id/index_tria"
         android:layout_height="wrap_content">
 
     </study.sang.androidbasestudy.view.index.TrianglePagerIndex>
+
+    <study.sang.androidbasestudy.view.index.BesizerPagerIndex
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:id="@+id/index_besizer"
+        android:layout_height="35dp">
+
+    </study.sang.androidbasestudy.view.index.BesizerPagerIndex>
+
+
+    <study.sang.androidbasestudy.view.index.BesizerChangePagerIndex
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:id="@+id/change_besizer"
+        android:layout_height="40dp">
+
+    </study.sang.androidbasestudy.view.index.BesizerChangePagerIndex>
 
 </LinearLayout>

@@ -1,15 +1,11 @@
 package study.sang.androidbasestudy.view.index;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -24,13 +20,13 @@ import study.sang.androidbasestudy.utils.JLog;
  * @Author：桑小年
  * @Data：2016/7/18 10:17
  */
-public class BasePagerLinearLayout extends LinearLayout {
+public abstract class BasePagerLinearLayout extends LinearLayout {
 
     public List<View> mDatas = new ArrayList<>();
     public int startx = 0;
 
 
-    private float distance = DeviceUtils.dip2px(getContext(), 5);//子控件间的默认距离
+    protected   float distance = DeviceUtils.dip2px(getContext(), 5);//子控件间的默认距离
     private float height = DeviceUtils.dip2px(getContext(), 1);//该控件的默认高度
     public int endx;
 
@@ -83,6 +79,9 @@ public class BasePagerLinearLayout extends LinearLayout {
         if (mode == MeasureSpec.AT_MOST) {
             heightMeasureSpec = measure;
         }
+
+        JLog.i(getMeasuredHeight()+"======="+measure);
+
         maxChildWidth = width;
         setMeasuredDimension(width * getChildCount(), heightMeasureSpec);
     }
@@ -194,13 +193,24 @@ public class BasePagerLinearLayout extends LinearLayout {
      *
      * @param indexName 子控件的显示的数据
      */
-    public void addIndexView(final String indexName) {
+    public abstract void addIndexView(final String indexName);
 
+    /**
+     * 向控件中添加子控件
+     *
+     * @param child 添加的子控件
+     */
+    public  void addIndexView(View child) {
+        mDatas.add(child);
+        child.setTag(getChildCount()-1);
+        child.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               moveIndex((Integer) v.getTag());
+            }
+        });
     }
 
-
-    public static void setSelect(int index) {
-
-    }
+    public abstract void moveIndex(final int toIndex) ;
 
 }
