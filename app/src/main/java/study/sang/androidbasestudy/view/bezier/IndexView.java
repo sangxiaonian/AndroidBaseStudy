@@ -182,7 +182,7 @@ public class IndexView extends RadioGroup {
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v.getTag()!=currentIndex) {
+                if ((int)v.getTag()!=currentIndex) {
                     startMove((Integer) v.getTag());
                     currentIndex= (int) v.getTag();
                 }

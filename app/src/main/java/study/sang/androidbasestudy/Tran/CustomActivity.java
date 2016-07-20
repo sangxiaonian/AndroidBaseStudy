@@ -99,6 +99,8 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.heart_view:
                 c= HeartViewActivity.class;
                 break;
+
+            //指示器
             case R.id.index_view:
                 c= BesizerIndexActivity.class;
                 break;

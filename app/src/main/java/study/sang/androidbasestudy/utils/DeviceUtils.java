@@ -3,6 +3,7 @@ package study.sang.androidbasestudy.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 /**
@@ -49,5 +50,15 @@ public class DeviceUtils {
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 获取手机最小滑动距离
+     * @param context
+     * @return
+     */
+    public static float getMinScroll(Context context){
+        int slop = ViewConfiguration.get(context).getScaledTouchSlop();
+        return slop;
     }
 }
