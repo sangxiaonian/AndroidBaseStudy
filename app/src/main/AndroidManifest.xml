@@ -54,7 +54,8 @@
         <activity android:name=".view.BezierActivity" />
         <activity android:name=".activity.HeartViewActivity" />
         <activity android:name=".activity.BesizerIndexActivity" />
-        <activity android:name=".activity.PagerIndexActivity"></activity>
+        <activity android:name=".activity.PagerIndexActivity" />
+        <activity android:name=".activity.StereoActivity"></activity>
     </application>
 
 </manifest>

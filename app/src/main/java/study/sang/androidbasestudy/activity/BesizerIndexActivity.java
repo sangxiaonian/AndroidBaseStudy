@@ -34,24 +34,24 @@ public class BesizerIndexActivity extends AppCompatActivity {
         linePagerIndex = (LinePagerIndex) findViewById(R.id.lin_index);
         trianglePagerIndex = (TrianglePagerIndex) findViewById(R.id.index_tria);
         besizerPagerIndex = (BesizerPagerIndex) findViewById(R.id.index_besizer);
-changePagerIndex = (BesizerChangePagerIndex) findViewById(R.id.change_besizer);
+        changePagerIndex = (BesizerChangePagerIndex) findViewById(R.id.change_besizer);
         for (int i = 0; i < 11; i++) {
-            indexView.addLayoutView(R.layout.item_radio,"测试");
-            linePagerIndex.addIndexView("测试"+i);
-            trianglePagerIndex.addIndexView("测试"+i);
-            besizerPagerIndex.addIndexView("测试"+i);
-            changePagerIndex.addIndexView("测试"+i);
+            indexView.addLayoutView(R.layout.item_radio, "测试");
+            linePagerIndex.addIndexView("测试" + i);
+            trianglePagerIndex.addIndexView("测试" + i);
+            besizerPagerIndex.addIndexView("测试" + i);
+            changePagerIndex.addIndexView("测试" + i);
         }
         indexView.addIndex("测试");
     }
 
     private int index;
 
-    public void next(View view){
+    public void next(View view) {
         String et_content = et.getText().toString().trim();
-        if (!TextUtils.isEmpty(et_content)){
-           index=Integer.parseInt(et_content);
-        }else {
+        if (!TextUtils.isEmpty(et_content)) {
+            index = Integer.parseInt(et_content);
+        } else {
             index++;
         }
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="study.sang.androidbasestudy.activity.StereoActivity">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="滑动到下一个"
+        android:onClick="next"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="滑动到上一个"
+        android:onClick="last"
+        />
+    <study.sang.androidbasestudy.view.image3DView.StereoView
+        android:layout_width="match_parent"
+        android:id="@+id/stereo"
+        android:background="#abcedf"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="我是第一个"
+            />
+         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="我是第2个"
+            />
+         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="我是第3个"
+            />
+         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="我是第4个"
+            />
+
+    </study.sang.androidbasestudy.view.image3DView.StereoView>
+
+</LinearLayout>

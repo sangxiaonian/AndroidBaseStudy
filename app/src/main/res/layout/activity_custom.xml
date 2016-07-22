@@ -68,5 +68,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="指示器" />
+    <Button
+        android:id="@+id/stereo_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3D控件" />
 
 </LinearLayout>
