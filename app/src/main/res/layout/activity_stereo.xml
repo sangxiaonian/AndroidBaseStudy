@@ -3,50 +3,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="study.sang.androidbasestudy.activity.StereoActivity">
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="滑动到下一个"
-        android:onClick="next"
-        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="滑动到上一个"
-        android:onClick="last"
-        />
-    <study.sang.androidbasestudy.view.image3DView.StereoView
+        android:onClick="next"
+        android:text="滑动到下一个" />
+
+    <Button
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="last"
+        android:text="滑动到上一个" />
+
+    <study.sang.androidbasestudy.view.image3DView.StereoView
         android:id="@+id/stereo"
-        android:background="#abcedf"
-        android:layout_height="50dp">
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#abcedf">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="我是第一个"
-            />
-         <TextView
+            android:background="#fedcba"
+            android:text="我是第一个" />
+
+        <TextView
             android:layout_width="match_parent"
+
             android:layout_height="50dp"
-            android:text="我是第2个"
-            />
-         <TextView
+            android:background="#fe00ba"
+            android:text="我是第2个" />
+
+        <TextView
             android:layout_width="match_parent"
+
             android:layout_height="50dp"
-            android:text="我是第3个"
-            />
-         <TextView
+            android:background="#00dcba"
+            android:text="我是第3个" />
+
+        <TextView
             android:layout_width="match_parent"
+
             android:layout_height="50dp"
-            android:text="我是第4个"
-            />
+            android:background="#fedc00"
+            android:text="我是第4个" />
 
     </study.sang.androidbasestudy.view.image3DView.StereoView>
 

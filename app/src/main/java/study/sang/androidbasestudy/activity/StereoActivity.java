@@ -20,10 +20,12 @@ public class StereoActivity extends AppCompatActivity {
     private int index;
 
     public void next(View view){
-        stereoView.scrollToIndex(++index);
+        index+=2;
+        stereoView.scrollToIndex( index);
     }
 
     public void last(View view){
-        stereoView.scrollToIndex(--index);
+        index-=2;
+        stereoView.scrollToIndex(index);
     }
 }
