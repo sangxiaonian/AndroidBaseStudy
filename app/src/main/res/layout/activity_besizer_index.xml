@@ -67,4 +67,12 @@
 
     </study.sang.androidbasestudy.view.index.BesizerChangePagerIndex>
 
+    <study.sang.androidbasestudy.view.progress.CircleWaveView
+        android:layout_width="match_parent"
+        android:background="#abcedf"
+        android:layout_height="match_parent"
+        android:id="@+id/wave"
+
+        />
+
 </LinearLayout>

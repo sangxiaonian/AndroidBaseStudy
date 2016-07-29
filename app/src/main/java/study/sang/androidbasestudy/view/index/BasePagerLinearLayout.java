@@ -80,7 +80,6 @@ public abstract class BasePagerLinearLayout extends LinearLayout {
             heightMeasureSpec = measure;
         }
 
-        JLog.i(getMeasuredHeight()+"======="+measure);
 
         maxChildWidth = width;
         setMeasuredDimension(width * getChildCount(), heightMeasureSpec);

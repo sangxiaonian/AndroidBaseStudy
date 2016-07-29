@@ -30,6 +30,10 @@ public class StereoView extends ViewGroup {
     private int lastIndex;
     private double rotio;
     private int aniDrution = 1000;
+    private   int mState = 0;
+    private   int Normal = 0;
+    private   int TOP = 1;
+    private   int Boom = 2;
 
 
     /**
@@ -79,7 +83,7 @@ public class StereoView extends ViewGroup {
         mHeight = getMeasuredHeight();
         mWidth = getMeasuredWidth();
         //滑动到当前的位置
-        scrollTo(0, currentIndex * mHeight);
+//        scrollTo(0, currentIndex * mHeight);
     }
 
     @Override
@@ -95,13 +99,6 @@ public class StereoView extends ViewGroup {
 
 
     }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -128,7 +125,6 @@ public class StereoView extends ViewGroup {
         //如果滑动上次滑动尚未结束,就直接终止滑动,然后直接滑动到指定位置,然后开始下一次滑动
         if (!scroller.isFinished()) {
             scroller.abortAnimation();
-//            scrollTo(0, mHeight * currentIndex);
         }
 
         int currY = scroller.getCurrY();
@@ -138,20 +134,24 @@ public class StereoView extends ViewGroup {
 
             //此时处于最上端
             if (currY == 0) {
+                mState = TOP;
                 //就将最后一个移动到第一个位置
                 addIndexView();
                 //然后从第二个位置滑动到第一个位置,造成无线滑动的错觉
                scroller.startScroll(0,  currY+mHeight,0,(toIndex - lastIndex) * mHeight,aniDrution);
             }else {
                 //普通的滑动
+                mState = Normal;
                 scroller.startScroll(0, currY,0,(toIndex - lastIndex) * mHeight,aniDrution);
             }
 
         } else {
             if (currY >= mHeight*getChildCount()-mHeight) {
+                mState = Boom;
                 addIndexView();
                 scroller.startScroll(0, currY-mHeight,0,(toIndex - lastIndex) * mHeight,aniDrution);
             }else {
+                mState = Normal;
                 scroller.startScroll(0, currY,0,(toIndex - lastIndex) * mHeight,aniDrution);
 
             }
@@ -168,7 +168,6 @@ public class StereoView extends ViewGroup {
         if (scroller.computeScrollOffset()) {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
 
-            float velocity = scroller.getCurrVelocity();
             rotio = 1 - (currentIndex * mHeight - scroller.getCurrY()) * 1.0 / mHeight;
 
 
@@ -182,9 +181,12 @@ public class StereoView extends ViewGroup {
         for (int i = 0; i < getChildCount(); i++) {
 
             int curScreenY = mHeight * i;
+
+
             float centerX = mWidth / 2;
             float centerY = (getScrollY() >= curScreenY) ? curScreenY + mHeight : curScreenY;
             float degree = 70 * (getScrollY() - curScreenY) / mHeight;
+
 
             canvas.save();
 
@@ -221,4 +223,6 @@ public class StereoView extends ViewGroup {
         }
 
     }
+
+
 }
