@@ -30,4 +30,6 @@
         <attr name="RoundProgressBarWidthNumber_radius" format="dimension"/>
     </declare-styleable>
 
+
+
 </resources>

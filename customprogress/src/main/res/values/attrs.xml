@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="customProgress" >
+        <attr name="custom_color" format="color"/>
+        <attr name="custom_bg" format="reference"/>
+        <attr name="custom_front" format="reference"/>
+        <attr name="custom_max" format="integer"/>
+        <attr name="custom_progress" format="integer"/>
+        <attr name="custom_textsize" format="dimension"/>
+        <attr name="custom_textcolor" format="color"/>
+        <attr name="custom_loop" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="DownLoadProgress"  >
+        <attr name="custom_linecolor" format="color"/>
+        <attr name="custom_blockcolor" format="color"/>
+        <attr name="custom_down_max" format="integer"/>
+        <attr name="custom_down_progress" format="integer"/>
+        <attr name="custom_down_textsize" format="dimension"/>
+        <attr name="custom_textprocolor" format="color"/>
+        <attr name="custom_textfailcolor" format="color"/>
+        <attr name="custom_textsuccesscolor" format="color"/>
+        <attr name="custom_down_loop" format="boolean"/>
+    </declare-styleable>
+
+
+
+</resources>

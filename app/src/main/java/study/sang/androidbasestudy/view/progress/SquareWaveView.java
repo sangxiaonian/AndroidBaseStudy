@@ -11,7 +11,6 @@ import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 
-import study.sang.androidbasestudy.utils.JLog;
 import study.sang.androidbasestudy.utils.Utils;
 
 /**
@@ -70,7 +69,6 @@ public class SquareWaveView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 
-        JLog.i("---------------------------"+height);
 
         mWidth = getWidth();
         mHeight = getHeight();
@@ -78,7 +76,6 @@ public class SquareWaveView extends View {
         centerX = mWidth / 2;
         centerY = mHeight / 2;
 
-        JLog.i(pro * 1.0 / count + "");
         rectF.left = centerX - radio;
         rectF.top = centerY - radio;
         rectF.right = centerX + radio;
