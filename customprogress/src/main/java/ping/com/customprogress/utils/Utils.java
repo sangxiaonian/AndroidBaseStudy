@@ -19,11 +19,11 @@ public class Utils {
      */
     public static float get2Double(double data) {
         BigDecimal b = new BigDecimal(data);
-//        return b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-        //   b.setScale(2,   BigDecimal.ROUND_HALF_UP)   表明四舍五入，保留两位小数
-        float v = (float) Double.parseDouble(String.format("%.2f", data));
+        return b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+//           b.setScale(2,   BigDecimal.ROUND_HALF_UP) ;  //表明四舍五入，保留两位小数
+//        float v = (float) Double.parseDouble(String.format("%.2f", data));
 
-        return v;
+//        return b;
     }
 
     /**

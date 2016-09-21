@@ -13,7 +13,8 @@
     </declare-styleable>
 
     <declare-styleable name="DownLoadProgress"  >
-        <attr name="custom_linecolor" format="color"/>
+        <attr name="custom_reachcolor" format="color"/>
+        <attr name="custom_unreachcolor" format="color"/>
         <attr name="custom_blockcolor" format="color"/>
         <attr name="custom_down_max" format="integer"/>
         <attr name="custom_down_progress" format="integer"/>

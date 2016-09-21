@@ -44,12 +44,7 @@
                     app:custom_color="#fedcba" />
             </LinearLayout>
 
-            <ping.com.customprogress.LogoProgress
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/logo"
-                app:custom_bg="@drawable/logoall"
-                />
+
 
             <study.sang.androidbasestudy.view.progress.HorizontalProgress
                 android:id="@+id/pro_defaul"
