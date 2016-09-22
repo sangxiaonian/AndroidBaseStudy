@@ -2,6 +2,7 @@ package ping.com.customprogress;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,13 +14,10 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.SystemClock;
-import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 
 import ping.com.customprogress.utils.DeviceUtils;
@@ -109,7 +107,7 @@ public class DownLoadProgress extends ViewGroup {
         view = new ImageView(getContext());
         view.setLayoutParams(new ViewGroup.LayoutParams((int) blockWidth, (int) blockWidth));
         addView(view);
-        upView(0);
+        upView(0, ONPRO);
         startMove();
     }
 
@@ -177,96 +175,84 @@ public class DownLoadProgress extends ViewGroup {
         mPath.reset();
         switch (state) {
             case ONPRO:
-                drawPro(state);
+                drawPro().start();
                 break;
             case SUCCESS:
-                drawSuccess(state);
+                drawSuccess();
         }
 
         canvas.restore();
     }
 
-    private void drawSuccess(int state) {
+    private void drawSuccess() {
+        if (animator != null) {
+            animator.cancel();
+        }
 
-        RoateAnimation(3, state);
+        final ValueAnimator success = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
+            @Override
+            public void onUpData(float value) {
+                if (value>=0.7){
+
+                    upView(0,SUCCESS);
+                }
+                view.setRotationY((360 * value));
+            }
+        });
+        success.setDuration(1000);
+        ValueAnimator  animator = drawPro();
+        AnimatorSet set = new AnimatorSet();
+        set.play(success).after(animator).after(1000);
+        set.start();
+
     }
 
     /**
      * 绘制正在执行的进度
-     *
-     * @param state
      */
-    private void drawPro(int state) {
+    private ValueAnimator drawPro() {
+        if (animator != null) {
+            animator.cancel();
+        }
+        animator = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.DAMP, new CustomAnimation.AnimotionListener() {
+            @Override
+            public void onUpData(float value) {
+                upView(value * ROTA,ONPRO);
 
+            }
+        });
 
-        RoateAnimation(3, state);//选择子控件
+        animator.setDuration(500);
+
+        return animator;
+
 
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        PROGRESS=0;
-//        setProgress(PROGRESS);
 
-//        postInvalidate();
+
+        setProgress(++PROGRESS);
+        if (PROGRESS>=MAX){
+            PROGRESS = 0;
+        }
         return true;
     }
 
 
     ValueAnimator animator;
 
-    /**
-     * 执行动画,旋转周期
-     *
-     * @param cycle
-     * @param state
-     */
-    private void RoateAnimation(final int cycle, final int state) {
-        if (PROGRESS == 0) {
-            return;
-        }
-        if (animator != null) {
-            animator.cancel();
-        }
-        animator = ValueAnimator.ofFloat(0f, 4.0f);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                Float value = animation.getAnimatedFraction();
-                switch (state) {
-                    case ONPRO:
-                        upView((float) (ROTA * (1 - value) * Math.sin(Math.sin(360 * Math.PI * (value - 0.5f) * cycle / 180 + 90 * Math.PI / 180))));
-                        break;
-                    case SUCCESS:
-                        upView(0);
-//                        view.setRotationY(360*value,view.getWidth()/2,view.getHeight());
-//                        view.setRotationY(90);
-                        break;
-                }
 
-            }
-
-
-        });
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                upView(0);
-            }
-        });
-        animator.setDuration(1000);
-        animator.start();
-
-    }
-
-    private void upView(float value) {
+    private void upView(float value, int state) {
         Bitmap bitmap = Bitmap.createBitmap((int) (blockWidth * 1.5f), (int) (blockHeight * 1.5f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
         switch (state) {
             case ONPRO:
                 showText = (String) TextUtils.concat(String.valueOf(Utils.get2Double(scale * 100)), "%");
+
                 canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight());
                 textPaint.setColor(textproColor);
                 break;
@@ -281,6 +267,7 @@ public class DownLoadProgress extends ViewGroup {
                 break;
         }
 
+        JLog.i(showText+"==="+value);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.getTextBounds(showText, 0, showText.length(), currentRect);
         mPath.reset();
@@ -337,18 +324,19 @@ public class DownLoadProgress extends ViewGroup {
         return MAX;
     }
 
+    boolean isfrush = true;
     public void setProgress(int progress) {
-        boolean isfrush = true;
+
         if (progress < MAX) {
-            isfrush =true;
+            isfrush = true;
             this.PROGRESS = progress;
             refushState(ONPRO);
         } else {
-//            progress = MAX;
             this.PROGRESS = MAX;
+
             if (isfrush) {
                 refushState(SUCCESS);
-                isfrush=false;
+                isfrush = false;
             }
         }
 
