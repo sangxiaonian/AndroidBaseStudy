@@ -1,4 +1,4 @@
-package ping.com.customprogress;
+package ping.com.customprogress.animation;
 
 import android.animation.ValueAnimator;
 

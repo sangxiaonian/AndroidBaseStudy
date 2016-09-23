@@ -1,7 +1,5 @@
 package ping.com.customprogress;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -18,8 +16,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
+import ping.com.customprogress.animation.CustomAnimation;
 import ping.com.customprogress.utils.DeviceUtils;
 import ping.com.customprogress.utils.JLog;
 import ping.com.customprogress.utils.Utils;
@@ -108,7 +108,7 @@ public class DownLoadProgress extends ViewGroup {
         view.setLayoutParams(new ViewGroup.LayoutParams((int) blockWidth, (int) blockWidth));
         addView(view);
         upView(0, ONPRO);
-        startMove();
+//        startMove();
     }
 
 
@@ -173,16 +173,48 @@ public class DownLoadProgress extends ViewGroup {
         mPath.lineTo(endX, endY);
         canvas.drawPath(mPath, mPaint);
         mPath.reset();
+
         switch (state) {
             case ONPRO:
                 drawPro().start();
                 break;
             case SUCCESS:
                 drawSuccess();
+                break;
+            case FAIL:
+                drawFail();
+
         }
 
         canvas.restore();
     }
+
+    private void drawFail() {
+        if (animator != null) {
+            animator.cancel();
+        }
+        ValueAnimator  animator = drawPro();
+
+        ValueAnimator failAnimation = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
+            @Override
+            public void onUpData(float value) {
+                if (value >= 0.5) {
+                    upView(0*180, FAIL);
+                } else {
+                    upView(0*180, ONPRO);
+                }
+                view.setRotation(180 * value);
+                view.setPivotX(view.getWidth()/2);
+                view.setPivotY(view.getHeight()+textPaint.getStrokeWidth()/2);
+            }
+        });
+        failAnimation.setInterpolator(new AccelerateInterpolator());
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(failAnimation).after(animator).after(1000);
+        set.start();
+    }
+
 
     private void drawSuccess() {
         if (animator != null) {
@@ -193,7 +225,6 @@ public class DownLoadProgress extends ViewGroup {
             @Override
             public void onUpData(float value) {
                 if (value>=0.7){
-
                     upView(0,SUCCESS);
                 }
                 view.setRotationY((360 * value));
@@ -202,7 +233,7 @@ public class DownLoadProgress extends ViewGroup {
         success.setDuration(1000);
         ValueAnimator  animator = drawPro();
         AnimatorSet set = new AnimatorSet();
-        set.play(success).after(animator).after(1000);
+        set.play(success).after(animator).after(500);
         set.start();
 
     }
@@ -214,9 +245,12 @@ public class DownLoadProgress extends ViewGroup {
         if (animator != null) {
             animator.cancel();
         }
+        final int a = (int) currentY;
         animator = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.DAMP, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
+
+                currentY=a +10*value;
                 upView(value * ROTA,ONPRO);
 
             }
@@ -233,11 +267,19 @@ public class DownLoadProgress extends ViewGroup {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-
-        setProgress(++PROGRESS);
+        ++PROGRESS;
+        if (PROGRESS>=35){
+            refushState(FAIL);
+//            PROGRESS=0;
+            return true;
+        }
+        setProgress(PROGRESS);
         if (PROGRESS>=MAX){
             PROGRESS = 0;
         }
+
+
+
         return true;
     }
 
@@ -261,8 +303,8 @@ public class DownLoadProgress extends ViewGroup {
                 textPaint.setColor(textSuccessColor);
                 break;
             case FAIL:
-                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight());
                 showText = "fail";
+                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight()/2);
                 textPaint.setColor(textFailColor);
                 break;
         }
@@ -327,16 +369,18 @@ public class DownLoadProgress extends ViewGroup {
     boolean isfrush = true;
     public void setProgress(int progress) {
 
-        if (progress < MAX) {
-            isfrush = true;
-            this.PROGRESS = progress;
-            refushState(ONPRO);
-        } else {
-            this.PROGRESS = MAX;
+        if (state!=FAIL) {
+            if (progress < MAX) {
+                isfrush = true;
+                this.PROGRESS = progress;
+                refushState(ONPRO);
+            } else {
+                this.PROGRESS = MAX;
 
-            if (isfrush) {
-                refushState(SUCCESS);
-                isfrush = false;
+                if (isfrush) {
+                    refushState(SUCCESS);
+                    isfrush = false;
+                }
             }
         }
 
