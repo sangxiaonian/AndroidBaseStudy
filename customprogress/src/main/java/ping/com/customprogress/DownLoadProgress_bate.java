@@ -17,8 +17,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 
 import ping.com.customprogress.animation.CustomAnimation;
@@ -32,7 +30,7 @@ import ping.com.customprogress.utils.Utils;
  * @Author：桑小年
  * @Data：2016/9/20 14:34
  */
-public class DownLoadProgress extends ViewGroup {
+public class DownLoadProgress_bate extends ViewGroup {
 
     private Paint mPaint, textPaint;
     private Path mPath;
@@ -49,6 +47,7 @@ public class DownLoadProgress extends ViewGroup {
     private final int GAP = DeviceUtils.dip2px(getContext(), 10);
     private int unReachColor;
     private float Angle = 8;
+    private ImageView view;
 
 
     private final int ONPRO = 0;//正在下载
@@ -57,20 +56,17 @@ public class DownLoadProgress extends ViewGroup {
 
     private int state = ONPRO;//状态
 
-    private float roateValue;
-    private android.graphics.Matrix matrix;
-
-    public DownLoadProgress(Context context) {
+    public DownLoadProgress_bate(Context context) {
         super(context);
         initViews(context, null, 0);
     }
 
-    public DownLoadProgress(Context context, AttributeSet attrs) {
+    public DownLoadProgress_bate(Context context, AttributeSet attrs) {
         super(context, attrs);
         initViews(context, attrs, 0);
     }
 
-    public DownLoadProgress(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DownLoadProgress_bate(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initViews(context, attrs, defStyleAttr);
 
@@ -105,10 +101,13 @@ public class DownLoadProgress extends ViewGroup {
         textPaint.getTextBounds("99.0%", 0, "99.0%".length(), textRect);
         cellTextWidth = textRect.width() / 3;
         cellTextHeight = textRect.height() / 3;
-        blockWidth = cellTextWidth * 4;
-        blockHeight = cellTextHeight + cellTextWidth * 2;
-        matrix = new android.graphics.Matrix();
+        blockWidth = cellTextWidth * 5;
+        blockHeight = cellTextHeight + cellTextWidth * 3;
 
+        view = new ImageView(getContext());
+        view.setLayoutParams(new LayoutParams((int) blockWidth, (int) blockWidth));
+        addView(view);
+        upView(0, ONPRO);
 //        startMove();
     }
 
@@ -128,7 +127,7 @@ public class DownLoadProgress extends ViewGroup {
             int width = (int) (getPaddingLeft() + getPaddingRight() + blockWidth + GAP * 2);
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(Math.max(width, getMeasuredWidth()), MeasureSpec.EXACTLY);
         }
-//        measureChild(getChildAt(0), widthMeasureSpec, heightMeasureSpec);
+        measureChild(getChildAt(0), widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
                 getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
     }
@@ -151,9 +150,6 @@ public class DownLoadProgress extends ViewGroup {
 
     }
 
-private  Bitmap blockBitmap;
-    private float springLength;//弹动的高度
-    private float blockX,blocckY;
     @Override
     protected void onDraw(Canvas canvas) {
         if (PROGRESS > MAX) {
@@ -161,8 +157,8 @@ private  Bitmap blockBitmap;
         }
         scale = (float) (PROGRESS * 1.0 / MAX);
         currentX = startX + lineLength * scale;
-        currentY = startY +(springLength+ cellHeight )* (scale < 0.5 ? 2 * scale : 2 * (1 - scale));
-
+        currentY = startY + cellHeight * (scale < 0.5 ? 2 * scale : 2 * (1 - scale));
+        getChildAt(0).layout((int) (currentX - blockWidth / 2), (int) (currentY - blockHeight - textPaint.getStrokeWidth() / 2), (int) (currentX + blockWidth / 2), (int) ((int) currentY - textPaint.getStrokeWidth() / 2));
         canvas.restore();
         JLog.i("--------onDraw----------");
         mPaint.setStyle(Paint.Style.STROKE);
@@ -176,54 +172,46 @@ private  Bitmap blockBitmap;
         mPath.moveTo(currentX, currentY);
         mPath.lineTo(endX, endY);
         canvas.drawPath(mPath, mPaint);
-
-        //绘制进度方块
-        blockBitmap=upView(roateValue, state);
-        blockX = currentX-blockBitmap.getWidth()/2;
-        blocckY =  currentY-blockBitmap.getHeight()/2-mPaint.getStrokeWidth()/2;
-        canvas.drawBitmap(blockBitmap,blockX,blocckY,mPaint);
         mPath.reset();
 
-//        if (!isAnim) {
-//
-//        }
+        switch (state) {
+            case ONPRO:
+                drawPro().start();
+                break;
+            case SUCCESS:
+                drawSuccess();
+                break;
+            case FAIL:
+                drawFail();
 
-        canvas.save();
+        }
+
+        canvas.restore();
     }
 
     private void drawFail() {
         if (animator != null) {
             animator.cancel();
         }
-
-        ValueAnimator animator = drawPro();
+        ValueAnimator  animator = drawPro();
 
         ValueAnimator failAnimation = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
-//                springLength = (float) (* ((1 - value) * Math.sin(Math.sin(360 * Math.PI * (value) * 4/ 180-90*Math.PI/180))))*2;
-                springLength=cellTextHeight*28*value;
-                roateValue = 180*value*value*value*value;
-                postInvalidate();
+                if (value >= 0.5) {
+                    upView(0*180, FAIL);
+                } else {
+                    upView(0*180, ONPRO);
+                }
+                view.setRotation(180 * value);
+                view.setPivotX(view.getWidth()/2);
+                view.setPivotY(view.getHeight()+textPaint.getStrokeWidth()/2);
             }
         });
-//        failAnimation.setInterpolator(new );
-        failAnimation.setDuration(500);
-
-        ValueAnimator last = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
-            @Override
-            public void onUpData(float value) {
-                springLength = (float) (cellTextHeight*2* ((1 - value) * Math.sin(Math.sin(360 * Math.PI * (value) * 3/ 180))))*2;
-                roateValue=  180 +ROTA*2*(float) ((1 - value) * Math.sin(Math.sin(360 * Math.PI * (value) * 1 / 180)));
-                postInvalidate();
-            }
-        });
-//        failAnimation.setInterpolator(new );
-        last.setDuration(800);
-
+        failAnimation.setInterpolator(new AccelerateInterpolator());
 
         AnimatorSet set = new AnimatorSet();
-        set.play(failAnimation).after(animator).before(last);
+        set.play(failAnimation).after(animator).after(1000);
         set.start();
     }
 
@@ -236,13 +224,14 @@ private  Bitmap blockBitmap;
         final ValueAnimator success = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
-                if (value >= 0.7) {
-                    upView(0, SUCCESS);
+                if (value>=0.7){
+                    upView(0,SUCCESS);
                 }
+                view.setRotationY((360 * value));
             }
         });
         success.setDuration(1000);
-        ValueAnimator animator = drawPro();
+        ValueAnimator  animator = drawPro();
         AnimatorSet set = new AnimatorSet();
         set.play(success).after(animator).after(500);
         set.start();
@@ -256,13 +245,14 @@ private  Bitmap blockBitmap;
         if (animator != null) {
             animator.cancel();
         }
-//        final float orCurrentY = currentY;
-        animator = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
+        final int a = (int) currentY;
+        animator = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.DAMP, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
-               springLength = (float) (cellTextHeight*2* ((1 - value) * Math.sin(Math.sin(360 * Math.PI * (value) * 2/ 180-90*Math.PI/180))));
-                roateValue=   ROTA*(float)((1 - value) * Math.sin(Math.sin(360 * Math.PI * (value) * 1 / 180-90*Math.PI/180)));
-                postInvalidate( );
+
+                currentY=a +10*value;
+                upView(value * ROTA,ONPRO);
+
             }
         });
 
@@ -278,15 +268,16 @@ private  Bitmap blockBitmap;
     public boolean onTouchEvent(MotionEvent event) {
 
         ++PROGRESS;
-        if (PROGRESS >= 50) {
+        if (PROGRESS>=35){
             refushState(FAIL);
 //            PROGRESS=0;
             return true;
         }
         setProgress(PROGRESS);
-        if (PROGRESS >= MAX) {
+        if (PROGRESS>=MAX){
             PROGRESS = 0;
         }
+
 
 
         return true;
@@ -296,14 +287,15 @@ private  Bitmap blockBitmap;
     ValueAnimator animator;
 
 
-    private Bitmap upView(float value, int state) {
-        Bitmap bitmap = Bitmap.createBitmap((int) (blockWidth * 2.5f), (int) (blockHeight * 2.5f), Bitmap.Config.ARGB_8888);
+    private void upView(float value, int state) {
+        Bitmap bitmap = Bitmap.createBitmap((int) (blockWidth * 1.5f), (int) (blockHeight * 1.5f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
         switch (state) {
             case ONPRO:
                 showText = (String) TextUtils.concat(String.valueOf(Utils.get2Double(scale * 100)), "%");
-                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight()/2);
+
+                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight());
                 textPaint.setColor(textproColor);
                 break;
             case SUCCESS:
@@ -312,15 +304,17 @@ private  Bitmap blockBitmap;
                 break;
             case FAIL:
                 showText = "fail";
-                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2+textPaint.getStrokeWidth()/2);
+                canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight()/2);
                 textPaint.setColor(textFailColor);
                 break;
         }
+
+        JLog.i(showText+"==="+value);
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.getTextBounds(showText, 0, showText.length(), currentRect);
         mPath.reset();
         int currentX = bitmap.getWidth() / 2;
-        int currentY = bitmap.getHeight()/2;
+        int currentY = bitmap.getHeight();
         int cell = cellTextWidth / 2;
         mPath.moveTo(currentX, currentY);
         mPath.lineTo(currentX - cell, currentY - cell);
@@ -333,9 +327,9 @@ private  Bitmap blockBitmap;
         canvas.drawPath(mPath, mPaint);
 
         textPaint.setTextSize(textSize);
-        canvas.drawText(showText, currentX - currentRect.width() / 2, currentY - cellTextHeight - currentRect.height(), textPaint);
-
-        return bitmap;
+        canvas.drawText(showText, currentX - currentRect.width() / 2, currentY - cellTextHeight * 2 - currentRect.height(), textPaint);
+        view.setImageBitmap(bitmap);
+        view.postInvalidate();
     }
 
 
@@ -351,7 +345,7 @@ private  Bitmap blockBitmap;
 //                    PROGRESS=count;
                     PROGRESS++;
                     setProgress(PROGRESS);
-//                    postInvalidate(false);
+//                    postInvalidate();
                 }
 
             }
@@ -361,17 +355,7 @@ private  Bitmap blockBitmap;
 
     public void refushState(int state) {
         this.state = state;
-        switch (state) {
-                case ONPRO:
-                    drawPro().start();
-                    break;
-                case SUCCESS:
-                    drawSuccess();
-                    break;
-                case FAIL:
-                    drawFail();
-                break;
-            }
+        postInvalidate();
     }
 
     public void setMax(int max) {
@@ -383,15 +367,13 @@ private  Bitmap blockBitmap;
     }
 
     boolean isfrush = true;
-
     public void setProgress(int progress) {
 
-        if (state != FAIL) {
+        if (state!=FAIL) {
             if (progress < MAX) {
                 isfrush = true;
                 this.PROGRESS = progress;
                 refushState(ONPRO);
-
             } else {
                 this.PROGRESS = MAX;
 
@@ -402,11 +384,10 @@ private  Bitmap blockBitmap;
             }
         }
 
+//        postInvalidate();
     }
 
     public int getProgress() {
         return PROGRESS;
     }
-
-
 }
