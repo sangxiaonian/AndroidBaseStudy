@@ -25,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ProgressBar;
 
 import ping.com.customprogress.animation.CustomAnimation;
 import ping.com.customprogress.utils.DeviceUtils;
@@ -68,11 +69,7 @@ public class DownLoadProgress extends ViewGroup {
     private float roateValue;
 
 
-    private Matrix m;
-    private Camera camera;
-
-
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -107,8 +104,9 @@ public class DownLoadProgress extends ViewGroup {
         textSize = typedArray.getDimensionPixelSize(R.styleable.DownLoadProgress_custom_down_textsize, DeviceUtils.dip2px(getContext(), 12));
         MAX = typedArray.getInt(R.styleable.DownLoadProgress_custom_down_max, 100);
         PROGRESS = typedArray.getInt(R.styleable.DownLoadProgress_custom_down_progress, 0);
-
         typedArray.recycle();
+
+
         mPath = new Path();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -133,15 +131,23 @@ public class DownLoadProgress extends ViewGroup {
         endPoint = new PointF();
         textPoint = new PointF();
         currentPoint = new PointF();
-
-
-           m = new Matrix();
-           camera = new Camera();
-
-
 //        startMove();
     }
 
+    int count = 0;
+    int pro;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction()==MotionEvent.ACTION_UP){
+            count++;
+        }
+        pro++;
+        setProgress(pro);
+        if (count%6==5){
+            downLoadFail();
+        }
+        return true;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -210,11 +216,14 @@ public class DownLoadProgress extends ViewGroup {
         blockBitmap = upView(roateValue, state);
         blockX = currentPoint.x - blockBitmap.getWidth() / 2;
         blocckY = currentPoint.y - blockBitmap.getHeight() / 2 - mPaint.getStrokeWidth() / 2;
-        canvas.drawBitmap(blockBitmap, blockX, blocckY-angle, mPaint);
+        canvas.drawBitmap(blockBitmap, blockX, blocckY, mPaint);
         mPath.reset();
         canvas.save();
     }
 
+    /**
+     * 失败时候的动画
+     */
     private void drawFail() {
         if (animator != null) {
             animator.cancel();
@@ -238,22 +247,23 @@ public class DownLoadProgress extends ViewGroup {
     }
 
 
+    /**
+     * 成功时候的动画
+     */
     private void drawSuccess() {
         if (animator != null) {
             animator.cancel();
         }
-
+        ValueAnimator animator = drawPro();
         final ValueAnimator success = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
-                angle = DeviceUtils.dip2px(getContext(),20)*(value>0.5f?2*(value-0.5f):2*(value));
-
+                angle = value;
                 postInvalidate();
             }
         });
         success.setInterpolator(new BounceInterpolator());
-        success.setDuration(500);
-        ValueAnimator animator = drawPro();
+        success.setDuration(1500);
         AnimatorSet set = new AnimatorSet();
         set.play(success).after(animator);
         set.start();
@@ -278,65 +288,56 @@ public class DownLoadProgress extends ViewGroup {
         });
 
         animator.setDuration(1000);
-
         return animator;
-
-
-    }
-
-
-    int count = 0;
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        ++count;
-        if (PROGRESS >= MAX) {
-            PROGRESS = 0;
-            count=0;
-        }
-
-        if (PROGRESS>=20){
-            refushState(SUCCESS);
-            return false ;
-        }
-        setProgress(count);
-
-
-
-        return true;
     }
 
 
     ValueAnimator animator;
 
 
+    /**
+     * 根据状态更新进度状态
+     *
+     * @param value
+     * @param state
+     * @return
+     */
     private Bitmap upView(float value, int state) {
         Bitmap bitmap = Bitmap.createBitmap((int) (blockWidth * 2.5f), (int) (blockHeight * 2.5f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         int currentX = bitmap.getWidth() / 2;
         int currentY = bitmap.getHeight() / 2;
         int cell = cellTextWidth / 2;
+        showText = (String) TextUtils.concat(String.valueOf(Utils.get2Double(scale * 100)), "%");
         switch (state) {
             case ONPRO:
-                showText = (String) TextUtils.concat(String.valueOf(Utils.get2Double(scale * 100)), "%");
                 canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
                 textPaint.setColor(textproColor);
                 drowPro(canvas, currentX, currentY, cell);
                 break;
             case SUCCESS:
-                showText = "done";
-                textPaint.setColor(textSuccessColor);
+                if (angle>0&&angle<0.5){
+                    canvas.scale(angle > 0.5f ? 2 * (angle - 0.5f) : 2 * (0.5f - angle), 1, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+                }else if (angle >= 0.5) {
+                    textPaint.setColor(textSuccessColor);
+                    showText = "done";
+                    canvas.scale(angle > 0.5f ? 2 * (angle - 0.5f) : 2 * (0.5f - angle), 1, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+                }else if (angle==0){
+                    textPaint.setColor(textproColor);
+                    canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+                }
                 drowPro(canvas, currentX, currentY, cell);
+
                 break;
             case FAIL:
                 showText = "fail";
-                JLog.i("fail:"+value);
+                JLog.i("fail:" + value);
                 textPaint.setColor(textFailColor);
-                if (value<=150) {
+                if (value <= 150) {
                     canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2 + textPaint.getStrokeWidth() / 2);
                     drowPro(canvas, currentX, currentY, cell);
-                }else {
-                    canvas.rotate(value-180, bitmap.getWidth() / 2, bitmap.getHeight() / 2 + textPaint.getStrokeWidth() / 2);
+                } else {
+                    canvas.rotate(value - 180, bitmap.getWidth() / 2, bitmap.getHeight() / 2 + textPaint.getStrokeWidth() / 2);
                     drawFail(canvas, currentX, currentY, cell);
                 }
 
@@ -345,40 +346,56 @@ public class DownLoadProgress extends ViewGroup {
         }
 
 
-
-
-
         return bitmap;
     }
 
+    /**
+     * 绘制失败标示
+     *
+     * @param canvas
+     * @param currentX
+     * @param currentY
+     * @param cell
+     */
     private void drawFail(Canvas canvas, int currentX, int currentY, int cell) {
-        currentY = (int) (currentY+textPaint.getStrokeWidth());
+        currentY = (int) (currentY + textPaint.getStrokeWidth());
         mPath.moveTo(currentX, currentY);
         mPath.lineTo(currentX - cell, currentY + cell);
         mPath.lineTo(currentX + cell, currentY + cell);
         mPath.lineTo(currentX, currentY);
-        RectF rectFail = new RectF(currentX - blockWidth / 2, currentY +cell , currentX + blockWidth / 2, currentY +blockHeight);
+        RectF rectFail = new RectF(currentX - blockWidth / 2, currentY + cell, currentX + blockWidth / 2, currentY + blockHeight);
         mPath.addRoundRect(rectFail, Angle, Angle, Path.Direction.CCW);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(blockColor);
         canvas.drawPath(mPath, mPaint);
         mPath.reset();
         textPoint.x = currentX - currentRect.width() / 2;
-        textPoint.y = currentY + cell + (currentY +cellTextHeight -currentRect.height()) / 2;
+        textPoint.y = currentY + cell + (currentY + cellTextHeight - currentRect.height()) / 2;
         canvas.drawText(showText, textPoint.x, textPoint.y, textPaint);
     }
 
 
-private float angle;
+    private float angle;
+
+    /**
+     * 绘制下载过程中进度
+     *
+     * @param canvas
+     * @param currentX
+     * @param currentY
+     * @param cell
+     */
     private void drowPro(Canvas canvas, int currentX, int currentY, int cell) {
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.getTextBounds(showText, 0, showText.length(), currentRect);
         mPath.reset();
 
+        //绘制下标三角
         mPath.moveTo(currentX, currentY);
         mPath.lineTo(currentX - cell, currentY - cell);
         mPath.lineTo(currentX + cell, currentY - cell);
         mPath.lineTo(currentX, currentY);
+        //绘制方块
         RectF rectF = new RectF(currentX - blockWidth / 2, currentY - blockHeight, currentX + blockWidth / 2, currentY - cell);
         mPath.addRoundRect(rectF, Angle, Angle, Path.Direction.CCW);
         mPaint.setStyle(Paint.Style.FILL);
@@ -388,8 +405,8 @@ private float angle;
         textPaint.setTextSize(textSize);
         mPath.reset();
         textPoint.x = currentX - currentRect.width() / 2;
-        textPoint.y = currentY  - (currentY  - currentRect.height()) / 2;
-
+        textPoint.y = currentY - (currentY - currentRect.height()) / 2;
+        //绘制文字
         canvas.drawText(showText, textPoint.x, textPoint.y, textPaint);
     }
 
@@ -404,8 +421,8 @@ private float angle;
                     count++;
 //                    PROGRESS = count % MAX;
 //                    PROGRESS=count;
-                    PROGRESS++;
-                    if (PROGRESS>MAX){
+                    ++PROGRESS;
+                    if (PROGRESS > MAX) {
                         return;
                     }
                     handler.sendEmptyMessage(0);
@@ -417,57 +434,98 @@ private float angle;
 
     }
 
+    /**
+     * 刷新当前状态
+     *
+     * @param state
+     */
     public void refushState(int state) {
         this.state = state;
         switch (state) {
             case ONPRO:
+                isfrush=true;
                 drawPro().start();
+
                 break;
             case SUCCESS:
+                isfrush=false;
                 drawSuccess();
                 break;
             case FAIL:
+                isfrush=false;
                 drawFail();
                 break;
         }
+        postInvalidate();
 
     }
 
+    /**
+     * 设置最大进度
+     *
+     * @param max
+     */
     public void setMax(int max) {
         this.MAX = max;
     }
 
+    /**
+     * 获取最大进度
+     *
+     * @return
+     */
     public int getMax() {
         return MAX;
     }
 
     boolean isfrush = true;
 
+    /**
+     * 设置当前进度
+     *
+     * @param progress
+     */
     public void setProgress(int progress) {
 
-        if (state==ONPRO){
-            if (progress < MAX) {
-                isfrush = true;
-                this.PROGRESS = progress;
-                refushState(ONPRO);
-            } else {
-                this.PROGRESS = MAX;
-                if (isfrush) {
-                    refushState(SUCCESS);
-                    isfrush = false;
+        synchronized (this) {
+            if (isfrush) {
+                if (PROGRESS>=MAX){
+                     this.PROGRESS = MAX;
+                         refushState(SUCCESS);
+
+                 }else{
+                    this.PROGRESS = progress;
+                    refushState(ONPRO);
                 }
             }
 
         }
 
 
-
-
     }
 
+
+    /**
+     * 获取当前进度
+     *
+     * @return 获取当前进度值
+     */
     public int getProgress() {
         return PROGRESS;
     }
 
+    /**
+     * 显示失败界面
+     */
+    public void downLoadFail() {
+        refushState(FAIL);
+    }
+
+    /**
+     * 加载成功
+     */
+    public void downLoadSuccess() {
+        refushState(SUCCESS);
+    }
 
 }
