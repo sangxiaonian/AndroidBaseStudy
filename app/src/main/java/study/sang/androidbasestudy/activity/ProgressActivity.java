@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import ping.com.customprogress.WaveBgProgress;
+import ping.com.customprogress.progress.FlikerProgress;
 import study.sang.androidbasestudy.R;
 import study.sang.androidbasestudy.view.progress.CircleWaveView;
 import study.sang.androidbasestudy.view.progress.HorizontalProgress;
@@ -18,6 +19,7 @@ public class ProgressActivity extends AppCompatActivity {
     private SquareWaveView pro_h;
     private CircleWaveView pro_cri;
     private WaveBgProgress wb, wv;
+    private FlikerProgress flik;
 
     int pro;
 
@@ -36,6 +38,7 @@ public class ProgressActivity extends AppCompatActivity {
 
             wb.setProgress(((wb.getProgress()) + 1) % wb.getMax());
             wv.setProgress(((wv.getProgress()) + 1) % wv.getMax());
+            flik.setProgress(((flik.getProgress()) + 1) % flik.getMax());
             sendEmptyMessageDelayed(0, 100);
         }
     };
@@ -52,6 +55,7 @@ public class ProgressActivity extends AppCompatActivity {
         pro_h = (SquareWaveView) findViewById(R.id.wave);
         wb = (WaveBgProgress) findViewById(R.id.pro_wave);
         wv = (WaveBgProgress) findViewById(R.id.pro_w);
+        flik= (FlikerProgress) findViewById(R.id.fliker);
 
         pro_roun_down.setMax(100);
         pro_roun_up.setMax(100);
@@ -62,6 +66,8 @@ public class ProgressActivity extends AppCompatActivity {
         pro_defaul.setMax(200);
         pro_defaul.setProgress(0);
 
+        flik.setMax(100);
+        flik.setProgress(0);
         wb.setMax(200);
         wb.setProgress(0);
         wv.setMax(400);

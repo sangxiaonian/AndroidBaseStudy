@@ -60,4 +60,6 @@ public class DeviceUtils {
         int slop = ViewConfiguration.get(context).getScaledTouchSlop();
         return slop;
     }
+
+
 }

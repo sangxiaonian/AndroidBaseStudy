@@ -32,6 +32,8 @@ import ping.com.customprogress.utils.DeviceUtils;
 import ping.com.customprogress.utils.JLog;
 import ping.com.customprogress.utils.Utils;
 
+import static android.R.attr.x;
+
 /**
  * Description：
  *
@@ -131,19 +133,21 @@ public class DownLoadProgress extends ViewGroup {
         endPoint = new PointF();
         textPoint = new PointF();
         currentPoint = new PointF();
-//        startMove();
+        startMove();
     }
 
     int count = 0;
     int pro;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction()==MotionEvent.ACTION_UP){
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             count++;
         }
-        pro++;
+//        pro++;
+        pro += 10;
         setProgress(pro);
-        if (count%6==5){
+        if (count % 6 == 5) {
             downLoadFail();
         }
         return true;
@@ -170,10 +174,6 @@ public class DownLoadProgress extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
-
-        JLog.i("--------onLayout----------");
-
         mWidth = getWidth();
         mHeight = getHeight();
         cellHeight = blockHeight;
@@ -199,13 +199,15 @@ public class DownLoadProgress extends ViewGroup {
         currentPoint.x = startPoint.x + lineLength * scale;
         currentPoint.y = startPoint.y + (-springLength + cellHeight) * (scale < 0.5 ? 2 * scale : 2 * (1 - scale));
 
-        canvas.restore();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(unReachColor);
         mPath.reset();
         mPath.moveTo(startPoint.x, startPoint.y);
         mPath.lineTo(currentPoint.x, currentPoint.y);
         canvas.drawPath(mPath, mPaint);
+
+        JLog.i(currentPoint.x+"----"+currentPoint.y+"---"+startPoint.x+"==="+startPoint.y+"---endX"+endPoint.x+"===entY"+endPoint.y);
+
         mPath.reset();
         mPaint.setColor(lineColor);
         mPath.moveTo(currentPoint.x, currentPoint.y);
@@ -218,7 +220,7 @@ public class DownLoadProgress extends ViewGroup {
         blocckY = currentPoint.y - blockBitmap.getHeight() / 2 - mPaint.getStrokeWidth() / 2;
         canvas.drawBitmap(blockBitmap, blockX, blocckY, mPaint);
         mPath.reset();
-        canvas.save();
+
     }
 
     /**
@@ -309,6 +311,7 @@ public class DownLoadProgress extends ViewGroup {
         int currentY = bitmap.getHeight() / 2;
         int cell = cellTextWidth / 2;
         showText = (String) TextUtils.concat(String.valueOf(Utils.get2Double(scale * 100)), "%");
+
         switch (state) {
             case ONPRO:
                 canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
@@ -316,13 +319,13 @@ public class DownLoadProgress extends ViewGroup {
                 drowPro(canvas, currentX, currentY, cell);
                 break;
             case SUCCESS:
-                if (angle>0&&angle<0.5){
+                if (angle > 0 && angle < 0.5) {
                     canvas.scale(angle > 0.5f ? 2 * (angle - 0.5f) : 2 * (0.5f - angle), 1, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-                }else if (angle >= 0.5) {
+                } else if (angle >= 0.5) {
                     textPaint.setColor(textSuccessColor);
                     showText = "done";
                     canvas.scale(angle > 0.5f ? 2 * (angle - 0.5f) : 2 * (0.5f - angle), 1, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-                }else if (angle==0){
+                } else if (angle == 0) {
                     textPaint.setColor(textproColor);
                     canvas.rotate(value, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
                 }
@@ -416,15 +419,14 @@ public class DownLoadProgress extends ViewGroup {
             @Override
             public void run() {
                 int count = 0;
-                while (true) {
+                while (count <= MAX-1) {
                     SystemClock.sleep(50);
                     count++;
+
+                    PROGRESS = count;
 //                    PROGRESS = count % MAX;
 //                    PROGRESS=count;
-                    ++PROGRESS;
-                    if (PROGRESS > MAX) {
-                        return;
-                    }
+
                     handler.sendEmptyMessage(0);
 //                    postInvalidate(false);
                 }
@@ -443,16 +445,16 @@ public class DownLoadProgress extends ViewGroup {
         this.state = state;
         switch (state) {
             case ONPRO:
-                isfrush=true;
+                isfrush = true;
                 drawPro().start();
 
                 break;
             case SUCCESS:
-                isfrush=false;
+                isfrush = false;
                 drawSuccess();
                 break;
             case FAIL:
-                isfrush=false;
+                isfrush = false;
                 drawFail();
                 break;
         }
@@ -489,11 +491,11 @@ public class DownLoadProgress extends ViewGroup {
 
         synchronized (this) {
             if (isfrush) {
-                if (PROGRESS>=MAX){
-                     this.PROGRESS = MAX;
-                         refushState(SUCCESS);
+                if (PROGRESS >= MAX) {
+                    this.PROGRESS = MAX;
+                    refushState(SUCCESS);
 
-                 }else{
+                } else {
                     this.PROGRESS = progress;
                     refushState(ONPRO);
                 }
