@@ -1,22 +1,20 @@
 package ping.com.customprogress;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -25,14 +23,12 @@ import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ProgressBar;
 
 import ping.com.customprogress.animation.CustomAnimation;
+import ping.com.customprogress.exception.ProgressException;
 import ping.com.customprogress.utils.DeviceUtils;
 import ping.com.customprogress.utils.JLog;
 import ping.com.customprogress.utils.Utils;
-
-import static android.R.attr.x;
 
 /**
  * Description：
@@ -46,7 +42,7 @@ public class DownLoadProgress extends ViewGroup {
     private Path mPath;
     private int textproColor, textFailColor, textSuccessColor, lineColor, blockColor;
     private float textSize, mWidth, mHeight, cellHeight;
-    private int MAX, PROGRESS;
+    private int MAX, PROGRESS,currentPRO;
     private float scale, lineLength, blockWidth, blockHeight, textStartX, textStartY;
 
     private PointF currentPoint, startPoint, endPoint, textPoint;
@@ -129,11 +125,12 @@ public class DownLoadProgress extends ViewGroup {
         blockHeight = cellTextHeight + cellTextWidth * 2;
 
 
-        startPoint = new PointF();
+        startPoint = new PointF(0, 0);
         endPoint = new PointF();
         textPoint = new PointF();
         currentPoint = new PointF();
-        startMove();
+        scale = 0;
+//        startMove();
     }
 
     int count = 0;
@@ -196,6 +193,7 @@ public class DownLoadProgress extends ViewGroup {
             PROGRESS = MAX;
         }
         scale = (float) (PROGRESS * 1.0 / MAX);
+
         currentPoint.x = startPoint.x + lineLength * scale;
         currentPoint.y = startPoint.y + (-springLength + cellHeight) * (scale < 0.5 ? 2 * scale : 2 * (1 - scale));
 
@@ -206,7 +204,6 @@ public class DownLoadProgress extends ViewGroup {
         mPath.lineTo(currentPoint.x, currentPoint.y);
         canvas.drawPath(mPath, mPaint);
 
-        JLog.i(currentPoint.x+"----"+currentPoint.y+"---"+startPoint.x+"==="+startPoint.y+"---endX"+endPoint.x+"===entY"+endPoint.y);
 
         mPath.reset();
         mPaint.setColor(lineColor);
@@ -229,8 +226,11 @@ public class DownLoadProgress extends ViewGroup {
     private void drawFail() {
         if (animator != null) {
             animator.cancel();
+        }if (valueAnimator!=null){
+            valueAnimator.cancel();
         }
-
+        isfrush = false;
+        isAdd=false;
         ValueAnimator animator = drawPro();
 
         ValueAnimator failAnimation = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
@@ -245,6 +245,14 @@ public class DownLoadProgress extends ViewGroup {
         failAnimation.setDuration(500);
         AnimatorSet set = new AnimatorSet();
         set.play(failAnimation).after(animator);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isfrush = true;
+                isAdd=true;
+            }
+        });
         set.start();
     }
 
@@ -256,7 +264,9 @@ public class DownLoadProgress extends ViewGroup {
         if (animator != null) {
             animator.cancel();
         }
-        ValueAnimator animator = drawPro();
+        ValueAnimator animator1 = drawPro();
+        isfrush = false;
+        isAdd=false;
         final ValueAnimator success = CustomAnimation.getInstance().creatAnimotion(CustomAnimation.normal, new CustomAnimation.AnimotionListener() {
             @Override
             public void onUpData(float value) {
@@ -267,7 +277,15 @@ public class DownLoadProgress extends ViewGroup {
         success.setInterpolator(new BounceInterpolator());
         success.setDuration(1500);
         AnimatorSet set = new AnimatorSet();
-        set.play(success).after(animator);
+        set.play(success).after(animator1);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isfrush = true;
+                isAdd=true;
+            }
+        });
         set.start();
 
     }
@@ -414,27 +432,7 @@ public class DownLoadProgress extends ViewGroup {
     }
 
 
-    private void startMove() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int count = 0;
-                while (count <= MAX-1) {
-                    SystemClock.sleep(50);
-                    count++;
 
-                    PROGRESS = count;
-//                    PROGRESS = count % MAX;
-//                    PROGRESS=count;
-
-                    handler.sendEmptyMessage(0);
-//                    postInvalidate(false);
-                }
-
-            }
-        }).start();
-
-    }
 
     /**
      * 刷新当前状态
@@ -443,18 +441,15 @@ public class DownLoadProgress extends ViewGroup {
      */
     public void refushState(int state) {
         this.state = state;
+        angle=0f;
         switch (state) {
             case ONPRO:
-                isfrush = true;
                 drawPro().start();
-
                 break;
             case SUCCESS:
-                isfrush = false;
                 drawSuccess();
                 break;
             case FAIL:
-                isfrush = false;
                 drawFail();
                 break;
         }
@@ -468,6 +463,10 @@ public class DownLoadProgress extends ViewGroup {
      * @param max
      */
     public void setMax(int max) {
+        if (MAX <= 0) {
+            throw new ProgressException("最大进度<0");
+        }
+
         this.MAX = max;
     }
 
@@ -481,6 +480,9 @@ public class DownLoadProgress extends ViewGroup {
     }
 
     boolean isfrush = true;
+    boolean isAdd = true;
+
+
 
     /**
      * 设置当前进度
@@ -488,23 +490,70 @@ public class DownLoadProgress extends ViewGroup {
      * @param progress
      */
     public void setProgress(int progress) {
+        if (isAdd) {
+            synchronized (DownLoadProgress.class) {
+                if (isAdd) {
+                    this.temPro = progress;
+                    if (temPro >= MAX) {
+                        this.temPro = MAX;
+                        isAdd=false;
+                    }
+                    JLog.e(temPro+"----"+isAdd);
 
-        synchronized (this) {
-            if (isfrush) {
-                if (PROGRESS >= MAX) {
-                    this.PROGRESS = MAX;
-                    refushState(SUCCESS);
 
-                } else {
-                    this.PROGRESS = progress;
-                    refushState(ONPRO);
+                        addPro();
+
                 }
+
             }
 
         }
 
-
     }
+
+    private int temPro;
+
+    private void upProgerss(int progress){
+        if (isfrush) {
+            synchronized (DownLoadProgress.class) {
+                if (isfrush) {
+                    this.PROGRESS = progress;
+                    if (PROGRESS >= MAX) {
+                        this.PROGRESS = MAX;
+                        refushState(SUCCESS);
+
+                    } else {
+                        refushState(ONPRO);
+
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    ValueAnimator valueAnimator;
+    private void addPro(){
+
+        if (valueAnimator!=null){
+            valueAnimator.cancel();
+        }
+
+        PROGRESS=PROGRESS>temPro?0:PROGRESS;
+
+        valueAnimator = ValueAnimator.ofInt(PROGRESS, temPro);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (int) animation.getAnimatedValue();
+                upProgerss(value);
+            }
+        });
+        valueAnimator.setDuration(500);
+        valueAnimator.start();
+    }
+
 
 
     /**

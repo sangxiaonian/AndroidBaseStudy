@@ -1,14 +1,14 @@
 package ping.com.customprogress.progress;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.Shader;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,11 +16,8 @@ import android.view.View;
 import ping.com.customprogress.utils.DeviceUtils;
 import ping.com.customprogress.utils.Utils;
 
-import static android.R.attr.max;
-import static android.R.attr.start;
-
 /**
- * Description：
+ * Description：模仿应用宝的下载进度条
  *
  * @Author：桑小年
  * @Data：2016/10/13 14:36
@@ -128,15 +125,20 @@ public class FlikerProgress extends View {
      * 绘制滑块
      */
     private void drawFlike(Canvas canvans) {
-
-        mPaint.setColor(Color.parseColor("#24d4f8"));
+        Shader shader = new RadialGradient(startX, getHeight() / 2, getHeight() * 3 / 4, Color.parseColor("#20fff8"), Color.parseColor("#40c0f8"), Shader.TileMode.REPEAT);
+        mPaint.setShader(shader);
+//        mPaint.setColor(Color.parseColor("#24d4f8"));
         canvans.drawCircle(startX, getHeight() / 2, getHeight() * 3 / 4, mPaint);
-        mPaint.setColor(Color.parseColor("#15e0f8"));
-        canvans.drawCircle(startX, getHeight() / 2, getHeight()*2/5, mPaint);
+//        mPaint.setColor(Color.parseColor("#15e0f8"));
+//        canvans.drawCircle(startX, getHeight() / 2, getHeight()*2/5, mPaint);
+        mPaint.setShader(null);
     }
 
     private Thread mThread;
 
+    /**
+     * 动态移动滑块
+     */
     private void move() {
         if (mThread != null) {
             return;
@@ -145,8 +147,8 @@ public class FlikerProgress extends View {
             @Override
             public void run() {
                 while (true) {
-                    startX += 30;
-                    SystemClock.sleep(50);
+                    startX += 10;
+                    SystemClock.sleep(20);
                     if (startX > endPoint.x + getHeight() * 2 / 3) {
                         startX = -getHeight() * 2 / 3;
 
@@ -159,6 +161,7 @@ public class FlikerProgress extends View {
         mThread.start();
 
     }
+
     /**
      * 设置最大进度
      *
@@ -195,8 +198,6 @@ public class FlikerProgress extends View {
     public int getProgress() {
         return PROGRESS;
     }
-
-
 
 
 }

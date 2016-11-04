@@ -19,7 +19,7 @@ import ping.com.customprogress.utils.DeviceUtils;
 import ping.com.customprogress.utils.JLog;
 
 /**
- * Description：
+ * Description：设置两个图片,一个为背景,另一个动态覆盖
  *
  * @Author：桑小年
  * @Data：2016/9/14 10:48
